@@ -1,0 +1,269 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\date{2015-2016}
+
+\begin{document}
+
+\begin{titlepage}
+ \begin{center}
+
+ \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+        \includegraphics[width=3cm]{INRIA.jpg}
+    \end{flushleft}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushright} \large
+      \includegraphics[width=3cm]{lille1.jpg}
+    \end{flushright}
+  \end{minipage} 
+  ~\\[3cm]
+
+  \textsc{\LARGE Projet de fin d'étude\\ informatique}\\[1.5cm]
+
+  \textsc{\Large Université Lille 1}\\[0.5cm]
+
+  % Title
+  \HRule \\[0.5 cm]
+  { \huge \bfseries Méthode de résolution pour le problème de planification des tâches multi-objectif \\[0.8cm] \large \emph{INRIA - Lille Nord Europe} \\[0.4cm] }
+  \HRule \\[1.5 cm]
+
+  % Author and supervisor
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+      \emph{Auteur:}\\
+	Emilie \textsc{Allart}
+    \end{flushleft}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushright} \large
+      \emph{Tuteurs:} \\
+      Sophie \textsc{Jacquin} \\
+      Laetitia \textsc{Jourdan} \\
+    \end{flushright}
+  \end{minipage} 
+
+  \\[3cm]
+  {\large \emph{27 janvier 2016} }
+  \vfill
+ \end{center}
+\end{titlepage}
+
+
+
+  \section*{Remerciements}
+  
+  ~~\\
+  
+  Je remercie ....
+  \phantomsection
+
+  \addcontentsline{toc}{section}{Remerciements}
+  \newpage
+
+  \newpage
+  \tableofcontents 
+  \newpage
+
+  \section*{Introduction}
+
+      \paragraph
+      \\Dans le cadre de ma dernière année de master, j'ai effectué mon projet de fin d'étude à INRIA Lille Nord Europe dans l'équipe Dolphin, afin de mettre en place une nouvelle méthode de résolution pour le problème de planification des tâches multi-objectif, encadrée par Sophie Jacquin (INRIA) et Laetitia Jourdan (INRIA/CRIStal). 
+      Je vais donc dans un premier temps, présenter INRIA et l'équipe Dolphin, puis Paradiseo et enfin le plan de mon rapport.
+
+      ~~\\
+
+      INRIA est un établissement public de recherche à caractère scientifique et technologique. Il a été créé en 1967 et a pour mission de produire une recherche d'excellence dans les champs informatiques et mathématiques des sciences du numérique et de garantir l'impact de cette recherche. Il couvre l'ensemble du spectre des recherches au coeur de ces domaines d'activités, et intervient sur les questions en lien avec le numérique, posées par les autres sciences et par les acteurs économiques et sociétaux.
+      INRIA rassemble 1677 chercheurs de l'institut et 1772 universitaires ou chercheurs d'autres organismes, il compte plus de 4500 articles publiés en 2013 et est à l'origine de plus de 110 start-ups.
+      L'institut est organisé en 8 centres :Bordeaux, Grenoble, Lille, Nancy, Rennes, Rocquencourt, Saclay et Sophia-Antipolis.
+      
+      ~~\\
+
+      INRIA Lille - Nord Europe comporte 16 équipes de recherche et possède plusieurs partenariats tels que Lille1, Lille2, Lille3, Centrale Lille, le CNRS et le CWI.
+      La stratégie du centre est de développer autour de la métropole lilloise un pôle d'excellence de rayonnement international (en priorité vers l'Europe du nord) et à fort impact local.
+      Pour se faire, l'institut s'appuie sur des thématiques de recherche ambitieuses dans le domaine des sciences du numérique; l'intelligence des données et les systèmes logiciels adaptatifs, plus précisément :
+      \begin{itemize} 
+	\item Internet des données et Internet des objets
+	\item Couplage perception/action pour l'interaction homme-machine
+	\item Modèle patient personnalisé dynamique
+	\item Génie logiciel pour les systèmes éternels
+      \end{itemize}
+      
+      ~~\\
+      
+      L'équipe Dolphin (Discrete multi-objective Optimization for Large-scale Problems with Hybrid dIstributed techNiques) entretient plusieurs relations industrielles et internationales (EDF-GDF, bioinformatique, DHL, Univ. Montréal, ...)
+      De nombreux secteurs de l'industrie sont concernés par des problèmes d'optimisation à grande échelle et complexes mettant en jeux des coûts financiers très importants et pour lesquels les décisions doivent être prises de façon optimales.
+      Face à des applications qui nécessitent la résolution de problèmes de taille sans cesse croissante et ce dans des délais de plus en plus court, voire en temps réel, seule la mise en oeuvre conjointe des méthodes avancées issues de l'optimisation combinatoire en Recherche Opérationnelle, de la décision en IA et de l'utilisation du Parallélisme et de la distribution permettrait d'aboutir à des solutions satisfaisantes.
+
+      L'équipe Dolphin a pour objectif la modélisation et la résolution parallèle de problèmes d'optimisation combinatoire (multi-objectifs) de grande taille. Des méthodes parallèles coopératives efficaces sont développées à partir de l'analyse de la structure du problème traité. Les problèmes ciblés appartiennent aussi bien à la classe des problèmes génériques (ordonnancement flow-shop, élaboration de tournées, etc...) que des problèmes industriels issue de la logistique, du transport, de l'énergie et de la bioinformatique.
+      
+      ~~\\
+      
+      Sophie Jacquin, chercheuse dans l'équipe, a développé lors de sa thèse un algorithme de planification de tâches multi-objectif.
+      \\
+      C'est pourquoi lors de mon stage, je devrais valider son algorithme en développement une méthode similaire inspirée de la littérature traitant le même problème.
+      
+      ~~\\
+
+      La première partie, présente le contexte du stage ainsi que le cahier des charges. La  deuxième partie explique plus en détail, étape par étape, le travail effectué. Pour finir par la validation présentant les données rentrées et les performances.
+
+      \phantomsection
+      \addcontentsline{toc}{section}{Introduction}
+      \newpage
+
+
+  \chapter{Cahier des charges et contexte}
+
+    \section{Contexte}
+    
+    Planification de tâche multi-objective -> minimise le retard et l'avance et respecte une contrainte de démarrage. 
+    
+    Utilisation Algo génétique qui est .... 
+    
+    Plusieurs versions vont être mise en place...
+    
+    Utilisation de Paradiseo.
+    
+    Modèle nouveau : idle time, block
+    
+    Ajout d'opérateur de mutation :
+    
+    Ajout d'opérateur de crossover : 
+      
+      
+    \section{Algorithme Génétique}
+	 
+	 
+	 \subsection{Principe}
+	 
+	    \paragraph{} 
+	   
+	 
+	 \subsection{Crossover}
+
+	    \paragraph{} 
+	      ~~\\
+	      
+	     
+	 \subsection{Mutation}
+	 
+	    \paragraph{}
+		
+
+      \section{Paradiseo}
+
+	\subsection{Descriptif}
+	
+	  \paragraph{Principe} 
+	      ~~\\
+	      
+	       
+	
+    \section{Cahier des charges}
+    
+     Ayant posé les bases, nous pouvons à présent passer à la présentation du cachier des charges pour comprendre le travail qui a été fait  durant ce projet.
+     Voici donc la liste des tâches à effectuer ainsi qu'un descriptif de ce qui est attendu. 
+      
+	\begin{description}
+	  \item [Apprentissage et documentation] {~~\\Avant de passer au différentes étapes du schéma, il est nécessaire de s'informer sur le contexte}
+	  \item [Etape 0] {~~\\Choix de la repésentation des données, choix des opérateurs}
+	  \item [Etape 1] {~~\\Implémentation des opérateurs de mutation(swap, extract & insert, subblock), de crossover (2-point).}
+	  \item [Etape 2] {~~\\Faire tourner la v1, sur chaque mutation.}
+	  \item [Etape 3] {~~\\Ajout des opérateurs de crossover (LOX et masque) + probabilité de choix de crossover et de mutation }
+	  \item [Etape 4] {~~\\Faire tourner la v2}
+	  \item [Etape 5] {~~\\Comparer les résultats avec ceux de Sophie}
+	\end{description}
+	     
+
+	\paragraph{}
+	  Il s'agit donc d'un stage riche niveau apprentissage et fort diversifié. Chaque étape va être expliqué dans le chapitre suivant.
+
+       
+  \chapter{Mise en oeuvre}
+
+  Ce chapitre va présenter le travail effectué lors de chaque étape. Partant de la réflexion jusqu'à l'aboutissement, en passant par les différentes possibilités envisagées et par les problèmes rencontrés.
+	
+	
+    \section{Phase d'apprentissage et documentation}
+    
+    
+    
+    \section{Etape 0 : Choix de repésentation des données et des opérateurs}
+    
+    
+    
+   
+    \section{Etape 1 : Implémentation des opérateurs de mutation(swap, extract & insert, subblock), de crossover (2-point)}
+	
+	
+     \section{Etape 2 : Faire tourner la v1.}
+    
+	 
+    \section{Etape 3 : Ajout des opérateurs de crossover + probabilité de choix des opérateurs }
+ 	
+     
+    \section{Etape 4 : Faire tourner la v2}
+      
+    
+    \section{Etape 5 : Comparaison avec Sophie}
+ 	
+     
+	
+  \chapter{Validation}
+
+  \section*{Conclusion}
+     
+      \paragraph{Les compétences acquises}
+	  ~\\
+	  Grâce au travail effectué à INRIA, j'ai pu acquérir plusieurs compétences:
+	  \begin{itemize}
+	  \end{itemize}
+      
+      \paragraph{Les apports personnelles}
+	~~\\
+	
+      \paragraph{Les apports à l'entreprise}
+	   ~\\
+	   
+    \phantomsection
+    \addcontentsline{toc}{section}{Conclusion}
+    \newpage
+
+    \newpage
+    
+    \section*{Glossaire}
+    
+      \begin{description}
+	\item [INRIA] Institut National de Recherche en Informatique et en Automatique
+	\item [CRIStal] Centre de Recherche en Informatique, Signal et Automatique de Lille
+	\item [CNRS] Centre National de la Recherche Scientifique
+	\item [CWI] Centrum Wiskunde & Informatica, organisme de recherche d'Amsterdam
+      \end{description}
+
+    \phantomsection
+    \addcontentsline{toc}{section}{Glossaire}
+    \newpage
+
+    \newpage
+   
+    \section*{Références}
+      \begin{itemize}
+       \item http://www.inria.fr/
+       \item http://dolphin.lille.inria.fr/
+      \end{itemize}
+
+    \phantomsection
+    \addcontentsline{toc}{section}{Annexe}
+    \newpage
+
+  \end{document}          
