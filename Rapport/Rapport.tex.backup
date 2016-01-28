@@ -1,0 +1,845 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\date{2015-2016}
+
+\begin{document}
+
+\begin{titlepage}
+ \begin{center}
+
+ \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+        \includegraphics[width=3cm]{INRIA.jpg}
+    \end{flushleft}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushright} \large
+      \includegraphics[width=3cm]{lille1.jpg}
+    \end{flushright}
+  \end{minipage} 
+  ~\\[3cm]
+
+  \textsc{\LARGE Projet de fin d'étude\\ informatique}\\[1.5cm]
+
+  \textsc{\Large Université Lille 1}\\[0.5cm]
+
+  % Title
+  \HRule \\[0.5 cm]
+  { \huge \bfseries Méthode de résolution pour le problème de planification des tâches multi-objectif \\[0.8cm] \large \emph{INRIA - Lille Nord Europe} \\[0.4cm] }
+  \HRule \\[1.5 cm]
+
+  % Author and supervisor
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushleft} \large
+      \emph{Auteur:}\\
+	Emilie \textsc{Allart}
+    \end{flushleft}
+  \end{minipage}
+  \begin{minipage}{0.4\textwidth}
+    \begin{flushright} \large
+      \emph{Tuteurs:} \\
+      Sophie \textsc{Jacquin} \\
+      Laetitia \textsc{Jourdan} \\
+    \end{flushright}
+  \end{minipage} 
+
+  \\[3cm]
+  {\large \emph{27 janvier 2016} }
+  \vfill
+ \end{center}
+\end{titlepage}
+
+
+
+  \section*{Remerciements}
+  
+  ~~\\
+  
+  Je remercie ....
+  \phantomsection
+
+  \addcontentsline{toc}{section}{Remerciements}
+  \newpage
+
+  \newpage
+  \tableofcontents 
+  \newpage
+
+  \section*{Introduction}
+
+      \paragraph
+      \\Dans le cadre de ma dernière année de master, j'ai effectué mon projet de fin d'étude à INRIA Lille Nord Europe dans l'équipe Dolphin, afin de mettre en place une nouvelle méthode de résolution pour le problème de planification des tâches multi-objectif, encadrée par Sophie Jacquin (INRIA) et Laetitia Jourdan (INRIA/CRIStal). 
+      Je vais donc dans un premier temps, présenter INRIA et l'équipe Dolphin, puis Paradiseo et enfin le plan de mon rapport.
+
+      ~~\\
+
+      INRIA est un établissement public de recherche à caractère scientifique et technologique. Il a été créé en 1967 et a pour mission de produire une recherche d'excellence dans les champs informatiques et mathématiques des sciences du numérique et de garantir l'impact de cette recherche. Il couvre l'ensemble du spectre des recherches au coeur de ces domaines d'activités, et intervient sur les questions en lien avec le numérique, posées par les autres sciences et par les acteurs économiques et sociétaux.
+      INRIA rassemble 1677 chercheurs de l'institut et 1772 universitaires ou chercheurs d'autres organismes, il compte plus de 4500 articles publiés en 2013 et est à l'origine de plus de 110 start-ups.
+      L'institut est organisé en 8 centres :Bordeaux, Grenoble, Lille, Nancy, Rennes, Rocquencourt, Saclay et Sophia-Antipolis.
+      
+      ~~\\
+
+      INRIA Lille - Nord Europe comporte 16 équipes de recherche et possède plusieurs partenariats tels que Lille1, Lille2, Lille3, Centrale Lille, le CNRS et le CWI.
+      La stratégie du centre est de développer autour de la métropole lilloise un pôle d'excellence de rayonnement international (en priorité vers l'Europe du nord) et à fort impact local.
+      Pour se faire, l'institut s'appuie sur des thématiques de recherche ambitieuses dans le domaine des sciences du numérique; l'intelligence des données et les systèmes logiciels adaptatifs, plus précisément :
+      \begin{itemize} 
+	\item Internet des données et Internet des objets
+	\item Couplage perception/action pour l'interaction homme-machine
+	\item Modèle patient personnalisé dynamique
+	\item Génie logiciel pour les systèmes éternels
+      \end{itemize}
+      
+      ~~\\
+      
+      L'équipe Dolphin (Discrete multi-objective Optimization for Large-scale Problems with Hybrid dIstributed techNiques) entretient plusieurs relations industrielles et internationales (EDF-GDF, bioinformatique, DHL, Univ. Montréal, ...)
+      De nombreux secteurs de l'industrie sont concernés par des problèmes d'optimisation à grande échelle et complexes mettant en jeux des coûts financiers très importants et pour lesquels les décisions doivent être prises de façon optimales.
+      Face à des applications qui nécessitent la résolution de problèmes de taille sans cesse croissante et ce dans des délais de plus en plus court, voire en temps réel, seule la mise en oeuvre conjointe des méthodes avancées issues de l'optimisation combinatoire en Recherche Opérationnelle, de la décision en IA et de l'utilisation du Parallélisme et de la distribution permettrait d'aboutir à des solutions satisfaisantes.
+
+      L'équipe Dolphin a pour objectif la modélisation et la résolution parallèle de problèmes d'optimisation combinatoire (multi-objectifs) de grande taille. Des méthodes parallèles coopératives efficaces sont développées à partir de l'analyse de la structure du problème traité. Les problèmes ciblés appartiennent aussi bien à la classe des problèmes génériques (ordonnancement flow-shop, élaboration de tournées, etc...) que des problèmes industriels issue de la logistique, du transport, de l'énergie et de la bioinformatique.
+      
+      ~~\\
+      
+      Sophie Jacquin, chercheuse dans l'équipe, a développé lors de sa thèse un algorithme de planification de tâches multi-objectif.
+      \\
+      C'est pourquoi lors de mon stage, je devrais valider son algorithme en développement une méthode similaire inspirée de la littérature traitant le même problème.
+      
+      ~~\\
+
+      La première partie, présente le contexte du stage ainsi que le cahier des charges. La  deuxième partie explique plus en détail, étape par étape, le travail effectué. Pour finir par la validation présentant les données rentrées et les performances.
+
+      \phantomsection
+      \addcontentsline{toc}{section}{Introduction}
+      \newpage
+
+
+  \chapter{Cahier des charges et contexte}
+
+    \section{Contexte}
+    
+    Planification de tâche multi-objective -> minimise le retard et l'avance et respecte une contrainte de démarrage. 
+    
+    Utilisation Algo génétique qui est .... 
+    
+    Plusieurs versions vont être mise en place...
+    
+    Utilisation de Paradiseo.
+    
+    Modèle nouveau : idle time, block
+    
+    Ajout d'opérateur de mutation :
+    
+    Ajout d'opérateur de crossover : 
+      
+      
+    \section{Algorithme Génétique}
+	 
+	 Arrive donc le clustering, avec sa définition, la notion de distance, la présentation de quelques méthodes courantes et enfin les métriques.
+	 
+	 \subsection{Principe}
+	 
+	    \paragraph{} 
+	      Le clustering consiste au regroupement d'objets, décrits par différents attributs (caractéristiques/variables), en cluster. Les objets d'un même cluster doivent être similaires entre eux mais, dissimilaires aux objets appartenant à d'autres clusters.
+	      On parle donc de segmentation, la division d'une population selon des variables répertoriées. 
+	      Cela permet une compréhension des données ou encore un prétraitement des données. 
+	      
+	      Par exemple, le diagramme de Hertzsprung-Russel, qui regroupe les étoiles par luminosité et température, réparti les étoiles dans trois clusters différents. Ces clusters représentent des étoiles qui sont dans des phases du cycle de vie stellaire très différentes (naine blanche, Géante rouge, séquence principale).
+	      
+	    \paragraph{Initialisation}
+	      ~~\\
+	      
+	      Les variables peuvent être classées selon divers critères. Ici, nous diviserons les variables en 4 classes : \\
+		\begin{itemize}
+		 \item catégorie : les variables énumératives, on ne peut pas dire laquelle est la plus grande, juste si elles sont différentes. Comme par exemple, le parfum d'une glace (vanille $\ge$ pistache? rien ne le prouve, en revanche chocolat $\ne$ fraise est vrai). \\
+		 \item rang : les rangs permettent d'ordonner les données, mais nous ne savons pas la différence entre deux rangs. Si X, Y et Z sont les rangs 1, 2 et 3 ; alors on sait que Y $\le$ X, mais non si (X-Y) $\le$ (Y-Z).\\
+		 \item intervalle : les variables d'intervalle permettent de mesurer la distance entre deux observations. Par exemple, en ce moment à Paris il fait 17$\degres$C et 20$\degres$C au Japon, on sait qu'il y a une différence de 3$\degres$C. \\
+		 \item mesures vraies : se sont des mesures d'intervalles que l'on mesure à partir d'un point zéro, donc le rapport entre deux valeurs d'une variable a un sens. C'est le cas de l'âge, le poids, la longueur ou le volume par exemple.\\
+		\end{itemize}
+
+	      Ainsi, les distances sont bien définies pour les variables d'intervalle et pour les mesures vraies. Malheureusement, pour les variables énumératives ou les rangs, il va falloir les transformer en variables d'intervalle, ce qui nous faussera un peu les données. En effet, si on numérote les parfums de glace, le parfum 1 et 8 seront bien plus éloignés que les parfums 3 et 4. 
+	 
+	   
+	      
+	 \subsection{Crossover}
+
+	    \paragraph{Qu'est-ce qu'une distance} 
+	      ~~\\
+	      
+	      Chaque champs d'un enregistrement devient un élément d'un vecteur qui décrit un point dans l'espace. La distance entre deux points est utilisée comme mesure de similarité. Si la distance entre les deux points est faible, les enregistrements sont considérés similaires.
+	      Pour appliquer les algorithmes, il faut choisir une distance entre individus, selon le type de données. 
+	      Si les variables ne sont pas mesurées dans la même unité, il va y avoir nécessité de les standardiser. 
+	   
+	
+	    \paragraph{Les différents types de distance}
+	      ~~\\
+	      \begin{itemize}
+		  \item pour les variables numériques comparables, on applique la distance euclidienne : pour A($x_{a}$,$y_{a}$) et B($x_{b}$,$y_{b}$), \[dist(A,B) = \sqrt{(x_a-x_b)^{2}+(y_a-y_b)^{2}} \] \\
+		  \item {pour les variables numériques non comparables (ex: un poids et une taille), il faut normaliser les distances entre 0 et 1 : 
+		  \[dist(A,B) = \sqrt{(\frac{x_a-x_b}{Max_x - Min_x})^{2}+(\frac{y_a-y_b}{Max_y - Min_y})^{2}} \] avec A $\ne$ B (pas le même domaine). \\
+		  On peut aussi utiliser, la distance de Minkowski : \[dist(A,B) = \sqrt{(\frac{x_a-x_b}{Max_x - Min_x})^{q}+(\frac{y_a-y_b}{Max_y - Min_y})^{q}} \] \\}
+		  \item  {pour les variables énumératives ou nominales (utilisées en Médecine), on compare les valeurs comme ci-dessous :
+		  \[ \left\{
+		      \begin{array}{rcr}
+			x_a = x_b, dist(A,B) = 0   \\
+			x_a \ne x_b, dist(A,B) = 1  \\
+		      \end{array}
+		    \right \]
+		  
+		  Dans le cas de i variables énumératives : 
+		  \[dist(A,B) = \sum_{i}{dist(a_i,b_i) }\] \\ }
+		  \item {pour les variables énumératives ordonnées : }
+	      \end{itemize}
+	      \begin{minipage}{0.4\textwidth}
+		  \begin{flushleft}
+		      \begin{figure}[H]
+			\includegraphics[width=2cm]{enumeration.jpeg}
+			\caption{Echelle de valeurs}
+		      \end{figure}
+		   \end{flushleft}
+	      \end{minipage}
+	      \begin{minipage}{0.4\textwidth}
+		  \begin{flushright} 
+		  
+		      On attribut des valeurs aux variables grâce à une échelle proportionnelle au nombre de valeurs différentes, voir la figure ci-jointe (Figure 1.1). 
+		      
+		  \end{flushright}
+	      \end{minipage} 
+		 
+	    \paragraph{}
+	       Ainsi, nous pouvons calculer la distance entre deux objets, entre un objet et un cluster ou encore entre deux clusters.
+	       Il existe différentes façons de calculer les distances entre les clusters:
+		\begin{itemize}
+		    \item par rattachement simple : {la distance entre les membres les plus proches des clusters}
+		    \item par rattachement double : {la distance entre les membres les plus éloignés des clusters}
+		    \item par comparaison des centroïdes : {la distance entre les centroïdes}
+		\end{itemize}
+	      
+	      Un centroïde étant le barycentre entre les points d'un même cluster.
+	      Il existe un certain nombre de distances qui peuvent être utilisées pour mesurer la distance entre deux points.
+	      
+	 \subsection{Différentes méthodes de clustering}
+	 
+	    \paragraph{}
+		Voici quelques méthodes classiques de clustering : 
+		\begin{itemize}
+		 \item partitionnement : on partitionne les objets et on évalue les partitions
+		 \item hiérarchique : on fait une décomposition hiérarchique d'ensembles d'objets
+		 \item densité : on se base sur une fonction de densité ou de connectivité
+		 \item grille : on se base sur une structure de granularité à plusieurs niveaux
+		\end{itemize}
+
+		Pour mon cas, je m'intéresse plus aux méthodes de partitionnement (surtout k-means) et aux méthodes hiérarchiques.
+
+	    \paragraph{k-means} 
+	      ~~\\
+	      
+	      \begin{minipage}[c]{0.60\linewidth} 
+		~~\\
+		1 - Sélectionner k points pour être les centroïdes initiaux (aléatoire).\\
+		2 - Tant que les centroïdes changent d'une itération à l'autre : \\
+		      - Former les k segments en affectant chacun des points au centroïde le plus proches. \\
+		      - Recalculer le centroïde de chaque segment.      
+		~~\\
+		
+		Par exemple, l'armée veut réduire le nombre de taille d'uniforme proposé en k tailles. Il suffit de répertorier les mensurations des soldats sur plusieurs critères, et de lancer un algorithme des k-means avec k clusters. On obtiendra ainsi les k tailles les plus adaptées. \\
+	      
+		Problème : \\ 
+		  - Connaitre le nombre de clusters souhaité, ce n'est pas forcément le mieux adapté ou plus représentatif. \\
+		  - Le choix des centres initiaux à une influence. \\
+	      \end{minipage} \hfill
+	      \begin{minipage}[c]{0.40\linewidth}
+	      
+		\begin{figure}[H]
+		      \includegraphics[width=3cm]{kmeans.jpeg}
+		      \caption{K-means}
+		\end{figure}
+		
+	      \end{minipage}  \hfill
+	      
+	    \paragraph{méthode hiérarchique} 
+	      ~~\\
+	      \begin{minipage}[c]{0.60\linewidth} 
+		 ~~\\ 
+		 1 - Pour commencer chaque point de données est un cluster. \\
+		 2 - On regroupe les deux clusters les plus proches (avec la distance la plus petite).\\
+		 3 - On recommence l'étape 2 jusqu'à ce  les enregistrements soient regroupés dans un seul et même cluster. \\
+		 Puis, on choisit le  niveau d'agglomération souhaité dans l'historique. 
+	      \end{minipage} \hfill
+	      \begin{minipage}[c]{0.40\linewidth}
+		\begin{figure}[H]
+		  \includegraphics[width=4cm]{hierarchique.jpeg}
+		  \caption{Hiérarchique}
+		\end{figure}
+	      \end{minipage}  \hfill
+	    
+	     On parle de méthode hiérarchique agglomérative ou divisive (respectivement ascendante ou descendante) selon le sens comme le montre le schéma ci-joint.\\
+	     Le résultat peut être illustré sous forme d'un arbre appelé dendogramme. Le niveau où l'on coupe l'arbre détermine le nombre de clusters.
+	  
+	  \subsection{Métrique de qualité}
+	  
+	    \paragraph{Qu'est-ce?}
+	      ~~\\
+	      Une métrique permet d'évaluer la qualité d'une solution, l'efficacité des clusters. Il y a des métriques de deux types, interne et externe. 
+	      
+	    \paragraph{Métriques internes}
+	      ~~\\ 
+	      Les métriques internes ne considèrent pas la classe pour juger de la validité des clusters.
+	      Afin de valider un cluster, il faut les retours d'une fonction de compacité, qui calcule la distance intra-cluster (wc) telle que la déviation et la variance, et d'une fonction de séparation, qui calcule la distance inter-cluster telle que la séparation et la connectivité. 
+	  
+	    \paragraph{Métriques externes}
+	      ~~\\
+	      Les métriques externes comparent le résultat par rapport à une solution sûre (dont on connait les classes).
+	      On peut citer pour les plus importantes : le RI (Rand Index) , l'ARI (Adjusted Rand Index), les F-mesures, le Coefficient Jaccard et l'Index Fowlkes-Mallows.
+	      
+	    \paragraph{Utilisation par Mo-Mine}
+	      ~~\\
+	      Mo-Mine$_{valid}$ prend donc en paramètre les résultats du clustering et en calcule les métriques souhaitées. 
+	      \\
+	      Ces métriques vont être traitées dans l'étape suivante afin de déterminer si Mo-Mine$_{clust}$ est plus performante que les autres logiciels.
+	      
+	      
+      \section{Mo-Mine}
+
+	\subsection{Descriptif}
+	
+	  \paragraph{Principe} 
+	      ~~\\
+	      
+	        Mo-Mine est une plateforme développée au sein de l'équipe Dolphin. Mo-Mine proposera différents modules permettant la mise en place de tous les éléments d'un processus de tests et d'évaluation d'algorithmes multi-objectifs pour la fouille de données. 
+		Cette plateforme fournira des jeux de données, des méthodes de prétraitement de données, des algorithmes de fouille de données basés sur des métaheuristiques multi-objectifs, des méthodes de post-traitement et de validation.
+
+		\\ Mo-Mine$_{clust}$ est la partie de la plateforme permettant de gérer le clustering par méthodes d'optimisation multi-objectif.
+	      
+	      
+	   \paragraph{Position}
+		~~\\
+	       \begin{figure}[H]
+		  \begin{center}
+		      \includegraphics[width=10cm]{integration.jpeg}
+		      \caption{Integration dans Mo-Mine}
+		   \end{center}
+		\end{figure}
+		
+		~~\\
+		Le module \textit{Emilie-Mine} est un module externe qui va permettre d'intégrer les données d'autres logiciels pour les comparer.
+		Sur le schéma, on peut voir qu'une première partie permet de traiter les données par le logiciel souhaité et de convertir la sortie dans un format adapté à Mo-Mine$_{valid}$. 
+		Ce fichier transcrit sera donc traiter par Mo-Mine$_{valid}$ qui en donnera des métriques. 
+		Métriques qui sont ensuite traitées par la deuxième partie du module, et qui permet de les comparer et de dire lequel parmis tous les algorithmes utilisés dans ces fichiers est le meilleur.
+
+	\subsection{$Mo-Mine_{clust}$}
+	   
+	   \begin{figure}[!h]
+	      \begin{center}     
+		  \includegraphics[width=4cm]{algo.jpeg}
+		  \caption{Algorithme évolutionnaire}
+	      \end{center}
+	   \end{figure}
+
+	    Mo-Mine$_{clust}$ utilise des algorithmes évolutionnaires. Comme le montre le schéma, un algorithme évolutionnaire a besoin de plusieurs éléments pour évoluer dans le temps.
+	    Différents éléments doivent être définis, se sont :
+	    \begin{itemize}
+	     \item Initialisation : permet de générer la population initiale.
+	     \item Représentation : définit la façon de représenter une solution.
+	     \item Fontions objectives : permet d'évaluer une population.
+	     \item Crossover : crée un descendant avec un, ou plus, parent de la population.
+	     \item Mutation : fait muter un individu de la population.
+	    \end{itemize}
+	    
+	    \\ 
+	    Il existe différentes possibilités pour chacun des éléments, donnant donc plusieurs algorithmes évolutionnaires qu'il faut choisir selon ce que l'on veut faire sur nos données pour une réponse optimale.
+
+  
+    \section{Cahier des charges}
+    
+     Ayant posé les bases, nous pouvons à présent passer à la présentation du cachier des charges pour comprendre le travail qui a été fait  durant ce stage.
+     Voici donc la liste des tâches à effectuer ainsi qu'un descriptif de ce qui est attendu. 
+      \begin{minipage}[c]{0.60\linewidth} 
+	 \begin{figure}[H]
+	    \includegraphics[width=4cm]{Schema0.jpeg}
+	    \caption{Réflexion du workflow}
+	  \end{figure}
+      \end{minipage}
+      \begin{minipage}[c]{0.60\linewidth} 
+	\begin{description}
+	  \item [Apprentissage et documentation] {~~\\Avant de passer au différentes étapes du schéma, il est nécessaire de s'informer sur le contexte}
+	  \item [Etape 0] {~~\\Rechercher des jeux de données respectant certains critères (taille, nature, type).}
+	  \item [Etape 1] {~~\\Se renseigner sur les formats des fichiers de données et les convertir dans le format adapté au traitement par les logiciels.}
+	  \item [Etape 2] {~~\\Lister, installer et utiliser les logiciels de datamining.}
+	  \item [Etape 3] {~~\\Créer un programme pour convertir les fichiers de sortie en des fichiers adaptés pour le traitement par Mo-Mine.}
+	  \item [Etape 4] {~~\\Lancer le traitement des résultats par $Mo-Mine_{eval}$ et obtention de métriques.}
+	  \item [Etape 5] {~~\\Faire la comparaison des résultats pour voir quel algorithme est le plus performant.}
+	\end{description}
+      \end{minipage}
+	     
+
+	\paragraph{}
+	  Il s'agit donc d'un stage riche niveau apprentissage et fort diversifié. Les solutions développées à chaques étapes vont être développées dans le chapitre suivant.
+
+       
+  \chapter{Mise en oeuvre}
+
+  Ce chapitre va présenter le travail effectué lors de chaque étape. Partant de la réflexion jusqu'à l'aboutissement, en passant par les différentes possibilités envisagées et par les problèmes rencontrés.
+	
+	
+    \section{Phase d'apprentissage et documentation}
+    
+    Etant nouvelle dans le domaine de la recherche et du datamining, il m'a fallu passer, avant toute chose, par une phase d'apprentissage et de compréhension du sujet.
+    Pour cela, apprendre les notions du datamining, pour en venir au clustering comme il a été expliqué en détail plus haut. 
+    Et en parallèle, apprendre à coder en C++, à faire la documentation sous Doxygen et automatiser la création des Makefiles grâce à Cmake.
+    Une fois ces connaissances acquises on peut commencer à réfléchir au problème.
+    
+    \section{Recherche de jeux de données}
+    
+    Avant de se lancer dans les traitements de données, il faut matière à travailler. C'est pourquoi, s'en suit la recherche de jeux de données.
+    Un jeu de données contient des instances. Chaque instance est caractérisée par plusieurs attributs (caractéristiques).
+    ~~\\
+    Vu que l'on veut valider le module sur des données biologiques, les jeux de données doivent provenir du domaine biologique ou médicale. Par exemple, la description d'un patient : son poids, sa taille, sa glycémie, ...
+    ~~\\
+    Pour valider Mo-Mine$_{clust}$, il faut prendre un éventail varié de jeu de données.
+    C'est-à-dire, que l'on va dans un premier temps les choisir selon leur nombre d'attributs, petit($\le$50), moyen(50-200) et grand ($\ge$ 200). 
+    Puis, les sélectionner selon le type de données qu'il contient, pour chaque catégorie de nombre d'attributs on prendra un jeu ne contenant que des variables numériques, un autre ne contenant que des variables nominales, et un dernier mixte.
+
+    
+   
+    \section{Etape 1 : Formats des fichiers d'entrée}
+	
+	    \begin{figure}[!h]
+	       \begin{center}
+		  \includegraphics[width=1cm]{Schema11.jpeg} \\
+		  \caption{Schéma de l'avancée}
+		\end{center}
+	     \end{figure}
+	  
+      ~~\\
+      
+      \begin{minipage}[c]{0.60\linewidth}
+	 La première étape consiste à regarder le format des jeux de données trouvés et de les transcrire dans le format adapté aux logiciels de datamining.
+	 \\Après recherche, il se trouve que les jeux de données sont le plus souvent fournis sous la forme de fichier : .data, .txt, .arff, .csv. Le format .xls étant facile à transcrire en .csv manuellement, il n'est pas pris en compte dans la transcription.
+	 \\Hors les logiciels de datamining prennent bien souvent en entrée des fichiers au format csv ou arff.
+	 \\Il a donc fallu réfléchir à un moyen de transformer ces fichiers au format adapté. 
+	 \\Pour se faire, nous avons développé un ensemble de parsers qui prend en entrée un fichier, contenant un jeu de données, et crée en sortie sa transcription au format arff et csv. Le tout, programmer en C++ de façon à l'intégrer plus facilement à la plateforme Mo-Mine.\\
+	 Afin de pouvoir ajouter des parsers à cet ensemble pour transcrire un nouveau format, nous avons favorisé une Factory.
+	 Nous voyons sur le schéma (Figure 2.2), représentant la hiérarchie des fichiers composant le programme, que trois parsers on était créés TranslateCsv (transforme un fichier csv en arff), TranslateArff (arff vers csv) et TranslateData (dans le cas d'un fichier txt ou data, crée un csv et un arff). 
+      \end{minipage} \hfill
+      \begin{minipage}[c]{0.40\linewidth}
+	\begin{figure}[H]
+	  \includegraphics[width=5cm]{Parser1.jpeg}
+	  \caption{Arborescence des fichiers}
+	 \end{figure}
+      \end{minipage}  \hfill
+      
+      \paragraph{}
+      Un problème est survenu lors du développement, pour la détection d'un nombre dans le TranslateCsv. 
+      En effet, lors de la création d'un arff, il faut savoir pour chaque attribut son type, si pour chaque instance cet attribut est un nombre il s'agit d'un type numérique, sinon c'est un type nominal. 
+      Le problème se pose dans la détection d'un nombre. \\
+      La première idée était de détecter un nombre via un Regex, cependant le plugin permettant l'utilisation des regex n'est pas encore au point, il a donc fallu trouver une autre solution.
+      De là est apparue l'idée d'implémenter nous-même un automate de détection d'un entier (cf Figure 2.3). De sorte, qu'un chiffre tel que -.25E56 ou encore 42,42e-42 soit détecté.
+     
+     \begin{figure}[!h]
+	  \begin{center}
+	    \includegraphics[width=12cm]{automate1.jpeg} \\
+	    \caption{Schéma de l'automate détectant les chiffres}
+	  \end{center}
+      \end{figure}
+
+      \paragraph{}
+      De la même façon, un deuxième automate a été créé pour gérer les espaces répétitifs, dont vous pouvez voir le schéma (Figure 2.4).
+     
+     \begin{figure}[!h]
+	  \begin{center}
+	    \includegraphics[width=4cm]{automate2.jpeg} \\
+	    \caption{Schéma de l'automate détectant les espaces et les vides}
+	  \end{center}
+      \end{figure}
+    
+     \section{Etape 2 : Utilisation des logiciels}
+    
+	    \begin{figure}
+	      \begin{center}
+		\includegraphics[width=1cm]{Schema12.jpeg} \\
+		\caption{Schéma de l'avancée}
+	      \end{center}
+	    \end{figure}
+	  \\
+	
+	\paragraph{Les différents logiciels}
+	~~\\
+	
+	Après avoir préparé les données à classer, il faut les traiter. Pour y arriver, il a fallu sélectionner les logiciels les mieux adaptés au datamining  et apprendre à les utiliser.
+
+	\begin{figure}
+        \centering
+	    \begin{subfigure}[b]{0.3\textwidth}
+		    \includegraphics[width=\textwidth]{weka.png}
+		    \caption{Weka}
+	    \end{subfigure}%
+	    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+	      %(or a blank line to force the subfigure onto a new line)
+	    \begin{subfigure}[b]{0.3\textwidth}
+		    \includegraphics[width=\textwidth]{knime.png}
+		    \caption{Knime}
+	    \end{subfigure}
+	    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+	      %(or a blank line to force the subfigure onto a new line)
+	\end{figure}	
+	\begin{figure}
+        \centering
+	   \begin{subfigure}[b]{0.3\textwidth}
+		    \includegraphics[width=\textwidth]{rapidminer.png}
+		    \caption{Rapidminer}
+	    \end{subfigure}
+	    ~ %
+	      %
+	    \begin{subfigure}[b]{0.3\textwidth}
+		    \includegraphics[width=3cm]{r.png}
+		    \caption{R}
+	    \end{subfigure}
+	    ~ %
+	      %
+        \caption{Logo des logiciels utilisés}
+	\end{figure}
+      
+	\paragraph{}
+	Vous pouvez donc voir, sur le schéma ci-dessus (Figure 2.6), les 4 logiciels sélectionnés pour faire le traitement des données. 
+	Tout d'abord, weka (Figure a) qui était déjà bien maitrisé par les membres de l'équipe.
+	Puis, après recherche, Knime (Figure b) et RapidMiner (Figure c), qui répondaient bien aux critères, sont venus s'ajouter.
+	Ils ont tous les trois étaient assez facile à prendre en main avec un interface graphique.
+	\\
+	Pour que cela soit complet, il aurait fallu prendre en main R (Figure d) qui demande un peu plus de réflexion et qui pourra être fait plus tard.
+	
+	\paragraph{Utilisation}
+	~~\\
+	
+	  Ces logiciels prennent tous les quatre en entrée des fichiers au format csv ou arff. C'est pourquoi, le parser fait à l'étape précédente nous permet de mettre les données dans le format adapté.
+	~~\\
+	  Lors d'une recherche vous devez sélectionner l'algorithme de votre choix, et régler ses paramètres. Par exemple pour K-means, vous devez choisir la méthode de calcul des distances (euclidienne s'il n'y a que des variables numériques) et la valeur de k (le nombre de clusters souhaité).
+	~~\\
+	  Vous pouvez également faire des visualisations, sous forme de diagramme pour un algorithme hiérarchique, sous forme de graphe où vous pouvez voir l'évolution du tri ou tout simplement sous format texte.
+	~~\\
+	  Il est également possible de trier les données que vous entrez avec des filtres, c'est-à-dire, choisir les attributs selon certain critère, juste par sélection manuelle ou, après calcul, en conservant les attributs les plus adaptés par exemple.
+	~~\\
+	Après traitement, il est possible de voir certaine métrique concernant le tri pour voir son efficacité. 
+      
+      
+    \section{Etape 3 : Exportation des résultats}
+ 	
+      \paragraph{}
+	  
+	    \begin{figure}[!h]
+	      \begin{center}
+		\includegraphics[width=1cm]{Schema13.jpeg} \\
+		\caption{Schéma de l'avancée}
+	      \end{center}	
+	   \end{figure} 
+      \\
+      
+      \begin{minipage}[c]{0.60\linewidth}
+	 \\ Après analyse des données par le logiciel, il faut exporter les résultats pour pouvoir les traiter, ce qui sera fait par Mo-Mine$_{valid}$ lors de l'étape suivante en calculant les métriques. 
+	  \\ Pour que cela soit possible, il faut tirer du fichier de sortie les données nécessaires et les fournir au module de traitement.
+	  Etant donné que Benjamin travaille déjà sur des fichiers au format Json, nous avons décider de stocker les données à passer au module dans un fichier de ce format.
+	  \\ Si on reprend, on prend le fichier de sortie du logiciel, on conserve les données nécessaires, comme la méthode de clustering et les paramètres qui vont avec, et les clusters pour chaque instance.
+	  \\ Pour l'instant, seule la sortie de weka sur un simple k-means est traitée, mais nous nous sommes déjà renseignés pour traiter les sorties k-means de RapidMiner et Knime.
+	  \\ Le code est divisé en 2 parties, une qui prélève les données et une crée le fichier Json avec les données récupérées.
+	  \\ Comme vous pouvez le voir sur le schéma de droite, nous avons encore une fois opté pour une factory. Ainsi, il est possible comme il a été cité juste avant d'ajouter des parsers. 
+	  De plus, la deuxième partie du parser déjà implémentée peut être réutilisée pour faire de nouveaux parsers, seul la première partie change.  
+      \end{minipage} \hfill
+      \begin{minipage}[c]{0.40\linewidth}
+	\begin{figure}[H]
+	  \\
+	  \includegraphics[width=5cm]{Parser2.jpeg}
+	  \caption{Arborescence des fichiers}
+	\end{figure}
+      \end{minipage}
+      
+      ~~\\
+      Maintenant que les données ont été récupéré passons au traitement par Mo-Mine$_{valid}$.
+
+    \section{Etape 4 : Mo-Mine$_{valid}$}
+      
+      \paragraph{}
+	  
+	    \begin{figure}[!h]
+	      \begin{center}
+		  \includegraphics[width=1cm]{Schema14.jpeg} \\
+		  \caption{Schéma de l'avancée}
+	      \end{center}
+	    \end{figure}
+     
+      \\
+      \paragraph{}
+	  Dans cette partie, nous récupérons donc les fichiers json. 
+	  De là, avec les données stockées dans les fichiers, nous faisons différents calculs de métriques grâce au module Mo-Mine$_{valid}$.
+	  \\ Pour un fichier, concernant une sortie d'un logiciel sur un certain algorithme, nous calculons des métriques sur différents critères et stockons les résultats dans un fichier csv.
+	  \\ Ainsi, nous obtenons pour un algorithme sur un logiciel, un tableau qui donne, pour chaque critère, sur chaque jeu de données, les métriques.
+	  \\ Ces métriques seront analysées et comparées par la suite pour voir quel algorithme est le plus efficace.
+	  \\
+	
+    \section{Etape 5 : Comparaison des résultats}
+ 	
+      \paragraph{}
+	  
+	    \begin{figure}[!h]
+	      \begin{center}
+		  \includegraphics[width=1cm]{Schema15.jpeg} \\
+		  \caption{Schéma de l'avancée}
+	      \end{center}
+	    \end{figure}
+	  
+	
+      \paragraph{}
+	
+      \\
+      \begin{figure}[!h]
+	  \begin{center}
+	    \includegraphics[width=11cm]{Script.jpeg} \\
+	    \caption{Schéma du script}
+	  \end{center}
+      \end{figure}
+      
+       Nous avonc donc les résultats de qualité des algorithmes en différents critères stockés dans des fichiers csv. Nous avons choisi de stocker les résultats dans des fichiers csv car cela est plus facile à charger dans R.
+      \\
+      A cette étape, il faut appliquer le test de Friedman sur chaque critère pour obtenir les p-values (ainsi voir s'il y a une différence significative entre les algorithmes), et il faut faire un ranking (moyenne des rangs des algorithmes sur chaque jeu pour chaque critère) pour savoir quel algorithme à la plus grande capacité sur chaque critère.
+      \\
+      Le schéma (2.11) illustre le programme développé pour effectuer cela.
+      \\
+      Les résultats de Friedman et du ranking, sont stockés dans des fichiers csv.
+      \\
+      Le soucis rencontré est dans l'intégration du script à la plateforme MO-Mine, c'est-à-dire passer du C++ au R et inversement.
+      Plusieurs possibilités ont été envisagées : \\
+      
+      \begin{tabular}{|l|l|l|p{6cm}|}\hline
+	  Possibilité & Avantage & Inconvénient \\
+	  \hline
+	  Shell & Facile à faire & Dépend de l'environnement \\
+	  \hline
+	  Python & Transcrit dans les deux sens & Apprendre le langage rapidement \\
+	  \hlines
+	  Processus & Se lance directement depuis C++ & Bien le gérer \\
+	  \hline
+	  RInside & Utiliser les méthodes R directement & Lire les documentations \\
+	  \hline
+      \end{tabular}
+
+      ~~\\
+      Nous avons donc choisi l'utilisation de RInside, il ne reste plus qu'à la mettre en place. 
+      
+     \section{Workflow complet}
+      
+	    C'est ainsi que nous achevons notre workflow. Il ne reste plus qu'à lancer le programme en entier et à analyser les résultats, ce que nous allons faire dans le dernier chapitre.
+	    \begin{figure}[!h]
+		\includegraphics[width=12cm]{Schema1.jpeg}
+		\caption{Workflow complet}
+	    \end{figure}
+	  
+	  
+	
+  \chapter{Validation}
+
+    \section{Sur quoi?}
+      
+      Pour valider le module de façon complète, nous avons cherché un large éventail de jeux : 
+      un petit (moins de 50 attributs), un moyen (entre 50 et 250 attributs) et un grand (plus de 250 attributs) ; 
+      et pour chacune de ces catégories de taille nous avons sélectionné un jeu ne contenant que des valeurs nominales, puis un autre ne contenant que des valeurs numériques et enfin un avec des valeurs mixtes.
+      Donc au total nous avons neuf jeux de données, énumérés avec leurs caractéristiques ci-dessous.
+      
+      \subsection{Tableau de données}
+      
+	\begin{flushleft}
+	  \leftskip -3cm
+	  \begin{tabular}{|l|l|l|l|l|p{6cm}|}\hline
+	    Nom & Instances & Attributs & Type & Source & Descriptif\\
+	    \hline
+	    Mushroom & 8124 & 22 & Nominal & uci & Toxicité et description de champignons\\
+	    \hline
+	    Parkinson & 5875 & 26 & Numeric & uci & Mesures biologiques sur des individus atteints par la maladie de Parkinson\\
+	    \hline
+	    BreastCancer & 569 & 32 & Mixte & uci & Analyses de résultats obtenus via imagerie déterminant s'il y a ou non (M ou B) cancer du sein\\
+	    \hline
+	    Central Nervous Syst. & 60 & 7130 & Mixte & mldata & Mesures sur des gènes, de chaque patient, concernant une tumeur du système nerveux central class0 ou class1 si le patient survit ou non\\
+	    \hline
+	    Ovarian Cancer & 253 & 15155 & Mixte & mldata & Etude permettant de distinguer s'il y a ou non cancer des ovaires (Normal ou Cancer)\\
+	    \hline
+	    Ovarien Cancer num & 253 & 15155 & Numeric & modifié & idem avec 0 ou 1\\
+	    \hline
+	    Arrhythmia & 452 & 279 & Numeric & uci & Déterminer les arythmies correspondant aux ECG\\
+	    \hline
+	    %DFA SOCRATA FAC
+	    Dialyse & 6034 & 74 & Mixte & data.medicare.gouv & Mesures de dialyses de différents établissements\\
+	    \hline
+	    Promoters & 106 & 58 & Nominal & uci &  Savoir si une gène est promoteur D'E.Coli ou non \\
+	    \hline
+	    Triazine & 185 & 61 & Numeric & kdd.ics.uci.edu & ...\\
+	    \hline
+	  \end{tabular}
+	\end{flushleft}
+
+       \subsection{Tableau de classification des jeux de données pour le plan d'expérience}
+	  
+	  \begin{center}
+	    \begin{tabular}{|l|l|l|l|}\hline
+	      . & petit (\le50) & moyen(50-250) & grand(\ge250)\\\hline
+	      Numeric & Parkinson & Triazine & Ovarian Cancer Num - Arrhythmia\\\hline
+	      Nominal & Mushroom & Promoters & (Discrétisation par intervalle)\\\hline
+	      Mixte & Breast Cancer & Central Nervous Syst. - Dialyse &  Ovarian Cancer\\\hline
+	    \end{tabular}
+	  \end{center}
+	
+	  Et voici donc le tableau des jeux de données classés selon leurs caractéristiques pour le plan d'expérience.
+	  
+    \section{Performances}
+    
+	  \paragraph{Métriques de qualité : ARI, RI, F-mesure}
+
+	    \begin{center}
+	      \begin{tabular}{|l|c|c|c|c|c|c|}\hline
+		   & \multicolumn{2}{|c|}{ARI} & \multicolumn{2}{|c|}{RI} & \multicolumn{2}{|c|}{F-mesure} \\
+		  \hline
+		   & KMeans & MoMine & KMeans & MoMine & KMeans & MoMine \\
+		  \hline \hline
+		  Breast Cancer & 0.5778 & \textbf{0.5994} & \textbf{0.7992} & 0.7918 & 0.8025 & \textbf{0.8175}\\
+		  \hline
+		  Arrhythmia & 0.02 & \textbf{0.035} & \textbf{0.6768} & 0.6526 & 0.001 & \textbf{0.1877} \\
+		  \hline
+		  Promoters & 0.012 & \textbf{0.026} & 0.506 & \textbf{0.532} & \textbf{0.6452} & 0.5107 \\
+		  \hline
+		  Yeast & 0.155 & \textbf{0.1581} & 0.7223 & \textbf{0.7469} & \textbf{0.4084} & 0.303 \\
+		  \hline
+		  Ovarian Cancer num & 0 & 0 & \textbf{0.5375} & 0.4982 & \textbf{0.6992} & 0.5156 \\
+		  \hline
+		  Mushroom & 0 & \textbf{0.061} & 0 & \textbf{0.5305} & 0 & \textbf{0.5383} \\
+		  \hline
+	      \end{tabular}
+	    \end{center}
+	    
+	    Voici l'ensemble des métriques calculées sur les jeux dont nous connaissons les classes avec l'algorithme de Mo-Mine (MO) et le simple K-means (KM). 
+	    A première vue, nous pouvons voir que les valeurs des deux algorithmes sont assez proches.
+	    
+	   \paragraph{Comparaison}
+	   ~~\\
+	   
+	   Les tableaux ci-dessous donne les p-values et les rankings des algorithmes pour chaque métrique après traitement par le script R.
+	
+	   
+	    \begin{center}
+	      \begin{tabular}{|l|l|c|c|}\hline
+		   & & \multicolumn{2}{|c|}{Ranking}\\
+		    \hline
+		    Métriques & Friedman & MoMine & KMeans\\
+		    \hline \hline
+		    ARI & 0.179712494879 & \textbf{1.25} & 1.75\\
+		    \hline
+		    RI & 1 & 1.5 & 1.5\\
+		    \hline
+		    F-mesure & 1 & 1.5 & 71.5\\
+		    \hline
+		\end{tabular}
+	     \end{center}
+	    
+	   \paragraph{Résultat}
+	     ~~\\
+	     
+	     Le tableau ci-dessous donne l'analyse de ces résultats.
+	     ~~\\
+	     
+	      \begin{center}
+		\begin{tabular}{|l|l|}\hline
+		    Métriques & Mo-Mine vs K-means Weka\\
+		    \hline
+		    ARI &  $>$ (léger)\\
+		    \hline
+		    RI &  = \\
+		    \hline
+		    F-mesure & = \\
+		    \hline
+		\end{tabular}
+	     \end{center}
+	    
+	    On voit donc d'après ce tableau  que les résultats de Mo-Mine sont semblables à ceux de Weka en simple kmeans.
+	    Ce qui n'est pas une conclusion positive, il reste des modifications à fournir au module de clustering.
+	    
+    \newpage
+    
+  \section*{Conclusion}
+      A présent la plateforme Mo-Mine contient un module de validation qui lui permettra de valider, sur des données biologiques, le module Mo-Mine$_{clust}$ qui utilise des approches d'optimisation combinatoire pour des problèmes d'extraction de connaissances.
+      Nous l'avons validé, mais malheureusement nous n'avons pas obtenu les résultats souhaités.
+      Mon module permet de comparer les sorties de logiciels de fouille de données à celles de Mo-Mine.
+      
+      \paragraph{Les compétences acquises}
+	  ~\\
+	  Grâce au travail effectué à INRIA, j'ai pu acquérir plusieurs compétences:
+	  \begin{itemize}
+	    \item Etre ponctuelle : pour gérer au mieux le travail en équipe, je devais arrivée à une certaine heure et rendre le travail dans les temps.
+	    \item Etre indépendante : il m'a fallu chercher et développer les solutions puis proposer mes résultats.
+	    \item Avoir l'esprit d'équipe : nous faisions un briefing toutes les semaines, et avec Benjamin nous nous donnions des retours sur ce qui n'allait pas.
+	  \end{itemize}
+      
+      \paragraph{Les apports personnelles}
+	~~\\
+	Ce stage a été riche en apports, j'ai dû maîtriser les logiciels et comprendre le clustering.
+	Il m'a fallu apprendre le C++, le R, la rédaction de Doxygen, des Cmake et de LateX.
+	Et aussi, revoir les automates et faire des parsers.
+
+      \paragraph{Les apports à l'entreprise}
+	   ~\\
+	   Cela a permis à Benjamin de se pencher sur des problèmes d'algorithmique plus important. La rédaction du rapport sera utile en cas de reprise de mon travail ou pour le comprendre.
+	   Le travail est fini dans les temps, donc mon module pourra servir pour d'autres logiciels de clustering (ajouter des logiciels, des algorithmes, jeux de données d'autre domaine, ...)
+	   Toutes les recherches effectuées peuvent aussi servir pour de futur projet :
+	    \begin{itemize}
+	      \item La conversion C++/R
+	      \item Les automates pour reconnaissance de nombre et de blanc.
+	      \item Le parser de fichier
+	      \item Le script R pour d'autres métriques
+	    \end{itemize}
+	    
+    \phantomsection
+    \addcontentsline{toc}{section}{Conclusion}
+    \newpage
+
+    \newpage
+    
+    \section*{Glossaire}
+    
+      \begin{description}
+	\item [INRIA] Institut National de Recherche en Informatique et en Automatique
+	\item [LIFL] Laboratoire d'Informatique Fondamentale de Lille
+	\item [CNRS] Centre National de la Recherche Scientifique
+	\item [CWI] Centrum Wiskunde & Informatica, organisme de recherche d'Amsterdam
+      \end{description}
+
+    \phantomsection
+    \addcontentsline{toc}{section}{Glossaire}
+    \newpage
+
+    \newpage
+   
+    \section*{Références}
+      \begin{itemize}
+       \item http://www.inria.fr/
+       \item http://dolphin.lille.inria.fr/
+       \item http://archive.ics.uci.edu/ml/
+       \item https://mldata.org/
+       \item http://www.kdnuggets.com/
+       \item Michael J. A. Berry & Gordon Linoff. Data Mining \textit{Techniques appliquées au marketing, à la vente et aux services client}
+       \item http://www.cs.waikato.ac.nz/ml/weka/
+       \item https://www.knime.org/
+       \item http://rapidminer.com/
+       \item http://www.r-project.org/
+       \item Laetitia Jourdan. Fouille de données
+       \item Benjamin Fisset. Clustering Multi objectif
+       \item Romain Gabriel et Clive Canape. Préconisation IRD/DSI Equipe IS \textit{Outils de build, Cmake}
+      \end{itemize}
+
+    \phantomsection
+    \addcontentsline{toc}{section}{Annexe}
+    \newpage
+
+  \end{document}          
