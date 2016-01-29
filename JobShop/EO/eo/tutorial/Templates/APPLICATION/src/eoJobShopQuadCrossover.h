@@ -60,6 +60,10 @@ public:
 	}
 	while (fabs((double) point1-point2) <= 2);
 	
+	// vérifie et corrige point1 < point2
+	if (p1 > p2)
+		std::swap(p1, p2);
+	
 	vector<eoJobShop> offspring;
 	offspring[0] = generateOffspring(eo1, eo2, p1, p2);
 	offspring[1] = generateOffspring(eo2, eo1, p1, p2);
@@ -80,9 +84,7 @@ public:
 {
 	eoJobShop result = parent1;
 	std::vector<bool> taken_values(result.size(), false);
-	// vérifie et corrige point1 < point2
-	if (p1 > p2)
-		std::swap(p1, p2);
+	
 	for (unsigned int i =0; i <= point1; i++)
 	{
 		taken_values[parent1.getJobShop(i)[0]] = true; // 
@@ -101,6 +103,20 @@ public:
 			i++;
 		}
 		j++;
+	}
+	
+	// maj blocs
+	int b1 = result.getAssociateBlock(p1)
+	int b2 =result.getAssociateBlock(p2)
+	for (int b= b1+1; b<b2;b++)
+	{
+		result.deleteBlock(b);
+	}
+	for (int i = p1+1; i < p2; i++)
+	{
+		t = result.getJobShop(i)[1];
+		if (t>0)  
+			result.addBlock(++b1, i);
 	}
 	return result;	
 }

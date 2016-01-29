@@ -55,7 +55,7 @@ using namespace std;
 
 /* and (possibly) your personal statistics */
 #include "eoJobShopStat.h"
-
+#include "eoJobShopOpR.h"
 // GENOTYPE   eoJobShop ***MUST*** be templatized over the fitness
 
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

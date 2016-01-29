@@ -114,37 +114,63 @@ public:
 			return jobs[i];
 	}
 	
-	unsigned int getsize()
+	unsigned int getSize()
 	{
 		return jobs.size();
 	}
 	
-	void putJobShop(int j, eoVector<int> job)
+	void putBlocks(vector<int> & v)
 	{
-		jobs[j] = jobs;
-	}
-
-	int getBlock(int i) 
-	{
-			return blocks[i];
+		blocks = v;
 	}
 	
-	void addBlock(int i)
+	void putJobShop(int j, eoVector<int> job)
 	{
-		;	// ajouter au bonne endroit
+		jobs[j] = move(job);
+	}
+
+	// retourne l'indice du bloc dans blocks
+	int getAssociateBlock(int i) { 
+		return jobs[i][2];
+	}
+	
+	void setAssociateBlock(int i, int b) {
+		jobs[i][2] = b;	
+	}
+	
+	// retourne le numéro du 1er job du bloc 
+	int getBlock(int i) 
+	{
+		return blocks[i];
+	}
+	
+	void addBlock(int i, int val)
+	{
+		blocks.insert(blocks.begin() + i -1, val);
+		for ( i = val; i < jobs.size(); i++) 
+		{
+			jobs[i][2] = jobs[i][2] +1; 
+		}
 	}
 	
 	void deleteBlock(int i)
 	{
-		;//TODO
+		int j = blocks[i];
+		blocks.erase(blocks.begin() + i-1 );
+		for ( int i = j; i < jobs.size(); i++) 
+		{
+			jobs[i][2] = jobs[i][2] -1; 
+		}
 	}
 	
-	void modifyBlock(int i) 
+	void modifyBlock(int b, int new_pos)
 	{
-		;//TODO à voir si utile
+		blocks[b] = new_pos;
+		jobs[new_pos][2] = b;
 	}
+	
 private:			   // put all data here
-	eoVector<eoVector<int>> jobs ; //num data, idle time
+	eoVector<eoVector<int>> jobs ; //num data, idle time, bloc
 	eoVector<int> blocks; //locus
 };
 

@@ -34,7 +34,12 @@ public:
   //  eoJobShopInit( varType  _anyVariable) : anyVariable(_anyVariable)
 // END eventually add or modify the anyVariable argument
   {
-	
+	Parser parser = Parser(filename);
+	data = parser.data();
+	int N = data.getN();
+	Timing timer = Timing(data);
+	vector<int> order = irange(0,N); 
+	timer.timing(& order, & time);
   }
 
 
@@ -43,16 +48,38 @@ public:
    * @param _genotype  generally a genotype that has been default-constructed
    *                   whatever it contains will be lost
    */
-  void operator()(eoJobShop & _eo)
-  {
-    // START Code of random initialization of an eoJobShop object
-    // END   Code of random initialization of an eoJobShop object
-    _genotype.invalidate();	   // IMPORTANT in case the _genotype is old
+  void operator()(eoJobShop & eo)
+	Job job = data.getJob(i);
+	vector<int> blocs;
+	blocs.push_back(0);
+	int bloc = 0;
+	eoVector<eoVector<int>> j;
+	j[i][0] = i;
+	j[i][1] = time[i];
+	j[i][2] = bloc; 
+	eo.putJobShop(i, j)
+	
+	for (int i =0; i < data.getN(); i++)
+	{
+		Job job = data.getJob(i);
+		eoVector<eoVector<int>> j;
+		j[i][0] = i;
+		j[i][1] = time[i];
+		if (time[i] > 0)
+		{
+			bloc++;
+			blocs.push_back(i)
+		}
+		j[i][2] = bloc; 
+		eo.putJobShop(i, j)
+	}
+	eo.putBlocs(bloc);
+	_genotype.invalidate();	   // IMPORTANT in case the _genotype is old
   }
 
 private:
 	Data data ;
-	Parser parser;
+	vector<int> time;
 };
 
 #endif

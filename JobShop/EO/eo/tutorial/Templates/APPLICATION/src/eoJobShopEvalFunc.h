@@ -38,7 +38,7 @@ public:
 	  int t = 0;
 	  int comp = 0;
 	  vector<vector<int>> results;
-	  vector<int> res;
+	  vector<int> res(2, 0);
 	  for (int i = 0; i < data.getN(); i++) 
 	  {
 		vector<int> j = _eo.getJobShop(i);
@@ -47,8 +47,10 @@ public:
 		results[i][1] = max(0, comp + j[1] - (job.getD() - job.getP())) ; //earliness
 		comp += j[1] + job.getP();
 	  }
-	  res[0] = sum(results[:][0]);
-	  res[1] = sum(results[:][1]);
+	  for (vector<int> v : results) 
+	  {
+		res[0] += v[0];
+		res[1] += v[1];
 	  return res;
   }
 
