@@ -131,6 +131,11 @@ public:
 		jobs[j] = job;
 	}
 	
+	void addJob(vector<int> job)
+	{
+		jobs.push_back(job);
+	}
+	
 	// retourne l'indice dans jobs du 1er job du bloc 
 	int getIndBlock(int i) 
 	{
@@ -145,17 +150,18 @@ public:
 		{
 			i++;
 		}
-		return i;
+		return i-1;
 	}
 	
 	void addBlock(int i, int val)
 	{
-		blocks.insert(blocks.begin() + i -1, val);
+		blocks.insert(blocks.begin() + i , val);
 	}
 	
 	void deleteBlock(int i)
 	{
-		blocks.erase(blocks.begin() + i-1 );
+		cout<<"print i block"<<i<<endl;
+		blocks.erase(blocks.begin() + i);
 	}
 	
 	void modifyBlock(int b, int new_pos)
@@ -163,6 +169,10 @@ public:
 		blocks[b] = new_pos;
 	}
 	
+	int getBlockSize()
+	{
+		return blocks.size();
+	}
 private: // put all data here
 	vector<vector<int> > jobs ; //num data, idle time
 	vector<int> blocks; //locus

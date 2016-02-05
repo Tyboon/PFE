@@ -46,12 +46,14 @@ public:
    */
   bool operator()(eoJobShop & eo)
   {
+	  cout<<"enter mutation blabl"<<endl;
 	bool isModified(true);
 	unsigned int N = eo.getSize();
 	unsigned int p1, p2; //random int;
+	
 	eoUniformGenerator<int> rdm(0,N);
 	vector<int> tmp;
-	int bloc, beginB, endB;
+	int beginB, endB;
 	
 	p1 =  rdm(); // rng.random(N);
 	tmp = eo.getJob(p1);
@@ -59,10 +61,12 @@ public:
 	int ind_begin = eo.getIndBlock(beginB);
 	endB = beginB+1; 
 	int ind_end = eo.getIndBlock(endB) ;
+	cout<<"bloc "<<beginB<<" "<<endB<<" "<<eo.getBlockSize()<<endl;
 	eoUniformGenerator<int> rdm2(ind_begin, ind_end);
 	p2 =  rdm2(); // rng.random(N);
 	if (p1 != p2)
 	{
+		cout<<"test 3"<<endl;
 		// vérifie et corrige point1 < point2
 		if (p1 > p2)
 			std::swap(p1, p2);
@@ -70,8 +74,9 @@ public:
 		// si idle time 
 		if (tmp[1] > 0) 
 		{
-			eo.modifyBlock(bloc, p2);
+			eo.modifyBlock(beginB, p2);
 		}
+		cout<<"test4"<<endl;
 		eo.putJob(p1, eo.getJob(p2)); // vérifier si copie nécessaire
 		eo.putJob(p2, tmp);
 	}
@@ -79,6 +84,7 @@ public:
 	{
 		isModified = false;
 	}
+	cout<< "exit mutation"<<endl;
 	return isModified;
   }
 

@@ -46,9 +46,9 @@ public:
 		H.push_back(0);
 		int ld=0;int lf=0;
 		vector<int> gamma;
-		gamma.push_back(0);;
+		gamma.push_back(0);
 		vector<int> C ;
-		C.push_back(0);;
+		C.push_back(0);
 		int P=0;
 		for(int k=1; k<n+1;k++)
 		{
@@ -138,6 +138,7 @@ public:
 				//cout<<H[ld]<<endl;
 			}
 		}
+		
 		int avail=C[n];
 		
 		for(int k=n;k>0;k--)

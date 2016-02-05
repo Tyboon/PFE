@@ -33,26 +33,37 @@ public:
    */
   bool operator()(eoJobShop & eo)
   {
+	cout<<"enter opR"<<endl;
 	bool isModified(true);
 	int comp = 0;
 	int diff = 0;
 	int size = eo.getSize();
-	  
+	  cout<< "Tou"<<endl;
 	for (int i = 0; i < size; i++)
 	{
 		vector<int> job = eo.getJob(i);
-		diff = data.getJob(0).getR() - (comp + job[1] );
+		diff = data.getJob(i).getR() - (comp + job[1] );
+		cout<<i<<" "<<diff<<endl;
 		if (diff > 0)
 		{
-			if (job[1] > 0)
-				job[1] = job[1] + diff;
+			if (job[1] > 0) 
+			{
+				job[1] += diff;
+				cout<< "if1"<<endl;
+			}
 			else
 			{
-				job[1] = job[1] + diff;
-				eo.addBlock(job[2], i);
-			}			
+				job[1] += diff;
+				cout<< "if2"<<endl;
+				eo.addBlock(eo.getBlock(i)+1, i);
+				cout<< "if2"<<endl;
+			}	
+			eo.putJob(i, job);
 		}
+		comp += job[1] + data.getJob(i).getP();
 	}
+	cout<<"toutou"<<endl;
+	cout<<"exit opR"<<endl;
 	return isModified;
   }
 

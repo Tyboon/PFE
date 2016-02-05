@@ -45,8 +45,10 @@ public:
 	  {
 		vector<int> j = _eo.getJob(i);
 		Jobs job = data.getJob(j[0]);
-		results[i][0] = max(0, job.getAlpha() * (job.getD() - (comp + job.getP() + j[1]))) ; // tardiness
-		results[i][1] = max(0, job.getBeta() * (comp + j[1] - (job.getD() - job.getP()))) ; //earliness
+		vector<int> r(2,0);
+		r[0] = max(0, job.getAlpha() * (job.getD() - (comp + job.getP() + j[1]))) ; // tardiness
+		r[1] = max(0, job.getBeta() * (comp + j[1] - (job.getD() - job.getP()))) ; //earliness
+		results.push_back(r);
 		comp += j[1] + job.getP();
 		res[0] += results[i][0];
 		res[1] += results[i][1];
@@ -62,16 +64,21 @@ public:
    */
   void operator()(EOT & _eo)
   {
+	cout<< "enter eval function" <<endl;
     // test for invalid to avoid recomputing fitness of unmodified individuals
     if (_eo.invalid())
       {
 	evalR(_eo);
+	      	cout<<"before"<<endl;
+
 	eoJobShopObjectiveVector objVec;
 	vector<int> res = tard_early(_eo);
+	cout<<"afeter"<<endl;
 	objVec[0] = res[0];
 	objVec[1] = res[1];
 	_eo.objectiveVector(objVec);
       }
+      cout<<"exit eval counter"<<endl;
   }
 
 private:

@@ -36,12 +36,7 @@ public:
 // END eventually add or modify the anyVariable argument
   {
 	data = data_;
-	int N = data.getN();
-	Timing<eoJobShop> timer(data);
-	vector<int> order ;
-	for (int i = 0; i < N; i++)
-		order.push_back(i);
-	timer.timing(order, time);
+	N = data.getN();
   }
 
 
@@ -52,28 +47,35 @@ public:
    */
   void operator()(eoJobShop & eo)
   {
+	Timing<eoJobShop> timer(data);
+	vector<int> time;
+	  
+	vector<int> order ;
+	for (int i = 0; i < N; i++)
+		order.push_back(i);
+	random_shuffle ( order.begin(), order.end() );
+	timer.timing(order, time);
 	int i =0;
-	Jobs job = data.getJob(i);
 	vector<int> blocs;
 	int bloc = 0;
 	blocs.push_back(bloc);
-	vector<int> j;
-	j[0] = i;
-	j[1] = time[i];
-	eo.putJob(i, j);
+	vector<int> j(2,0);
+	j[0] = order[i];
+	j[1] = time[i] - data.getJob(order[i]).getP() ;
+	cout<<"time 0 : "<<time[0]<<endl;
+	eo.addJob(j);
 	
-	for (i =1; i < data.getN(); i++)
+	for (i =1; i < N; i++)
 	{
-		Jobs job = data.getJob(i);
-		vector<int> j;
-		j[0] = i;
-		j[1] = time[i];
-		if (time[i] > 0)
+		vector<int> j(2,0);
+		j[0] = order[i];
+		j[1] = time[i] - time[i-1] - data.getJob(order[i]).getP() ;
+		if (j[1] > 0)
 		{
 			bloc++;
 			blocs.push_back(i);
 		}
-		eo.putJob(i, j);
+		eo.addJob(j);
 	}
 	eo.putBlock(blocs);
 	eo.invalidate();	   // IMPORTANT in case the _genotype is old
@@ -81,7 +83,7 @@ public:
 
 private:
 	Data data ;
-	vector<int> time;
+	int N;
 };
 
 #endif

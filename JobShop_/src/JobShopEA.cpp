@@ -35,8 +35,10 @@ int main (int argc, char *argv[])
 
     /** Lecture des informations d entree a partir du fichier mentionné dans le fichier "fichier.param" **/
 
-    std::string inputFile = parser.createParam(std::string("../DataOneMachine/bky20/bky20_1.txt"), "inputFile", "File which describes input information", 'I', "Param" ).value();
-
+    std::string inputFile = parser.createParam(std::string("../../DataOneMachine/bky20/bky20_1.txt"), "inputFile", "File which describes input information", 'I', "Param" ).value();
+    
+   
+    
     Parser p(inputFile);
     Data data = p();
 
@@ -44,7 +46,7 @@ int main (int argc, char *argv[])
 
     // parameters
     unsigned int MAX_GEN = parser.createParam((unsigned int)(100), "maxGen", "Maximum number of generations",'G',"Param").value();
-
+ 
    
     // objective functions evaluation
     //moeoUCPEval eval;
@@ -82,18 +84,18 @@ int main (int argc, char *argv[])
     //eoPropCombinedMonOp<Indi> mut(mut1, pMut1);
     //mut.add(w_mut,pWMut);
 
-    double pMut = parser.getORcreateParam(0.1, "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
+    double pMut = parser.createParam(0.1, "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
     if ( (pMut < 0) || (pMut > 1) )
         throw runtime_error("Invalid pCross");
     // generate initial population
      eoSGAGenOp<Indi> op(cross, pCross, mut, pMut);
+    
     // // initialize the population
      eoPop<Indi>& pop   = make_pop(parser, state, init);
-
     eoFileMonitor   *myFileMonitor;
  
-    int algo = parser.getORcreateParam(0, "algo", "Choose algorithm 0 = NSGA-II, 1 = IBEA", 'A', "Algorithm").value();
-    int maxtime=parser.getORcreateParam(100, "maxtime", "temps maximal", 't', "Algorithm").value();
+    int algo = parser.createParam(0, "algo", "Choose algorithm 0 = NSGA-II, 1 = IBEA", 'A', "Algorithm").value();
+    int maxtime=parser.createParam(100, "maxtime", "temps maximal", 't', "Algorithm").value();
     // printing of the initial population
     /*cout << "Initial Population\n";
     pop.sortedPrintOn(cout);
@@ -106,12 +108,16 @@ int main (int argc, char *argv[])
     moeoArchiveUpdater<Indi> updater(arch1, pop);
     //checkpoint.add(updater);
      //moeoSteadyHyperVolumeContinue<Indi> continuator( 0, 100, hyperVol);
+     
     if ( algo == 0 ) {
    	 // build NSGA-II
-        //moeoNSGAII < Indi > nsgaII (MAX_GEN, eval, cross, pCross, mut, pMut);
+        moeoNSGAII < Indi > nsgaII (MAX_GEN, eval, cross, pCross, mut, pMut);
         //moeoNSGAII < Indi > nsgaII (checkpoint, eval, op);
     	// run the algo
-    	//nsgaII (pop);
+        
+    	nsgaII (pop);
+        cout << "test"<<endl;
+
     } else {
     	moeoAdditiveEpsilonBinaryMetric<eoJobShopObjectiveVector> indicator;
     	moeoIBEA<Indi> ibea (MAX_GEN, eval, cross, pCross, mut, pMut, indicator);
@@ -137,13 +143,7 @@ int main (int argc, char *argv[])
     arch.sortedPrintOn(std::cout);
     std::cout << std::endl;
     
-    std::cout << "avec archive : ";
-    //arch1.sortedPrintOn(std::cout);
-    std::cout << std::endl;
-  
-    vector<eoJobShopObjectiveVector> res;
-    for(int i=0;i<arch.size();i++)
-        res.push_back(arch[i].objectiveVector());
+
 
 
     return EXIT_SUCCESS;

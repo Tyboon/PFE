@@ -49,6 +49,7 @@ public:
    */
   bool operator()(EOT & eo1, EOT& eo2)
   { //2points
+	cout<<"enter crossover"<<endl;
         bool oneAtLeastIsModified(true);
 	unsigned int N = eo1.getSize();
 	unsigned int p1, p2; //random int;
@@ -56,7 +57,7 @@ public:
 	
 	p1 =  rdm(); // rng.random(N);
 	p2 =  rdm(); // rng.random(N);
-	
+	cout <<"p1, p2 " <<p1<<" "<<p2<<endl;
 	// vérifie et corrige point1 < point2
 	if (p1 > p2)
 		std::swap(p1, p2);
@@ -64,8 +65,8 @@ public:
 	if (p1 !=p2)
 	{
 		vector< EOT > offspring;
-		offspring[0] = generateOffspring(eo1, eo2, p1, p2);
-		offspring[1] = generateOffspring(eo2, eo1, p1, p2);
+		offspring.push_back(generateOffspring(eo1, eo2, p1, p2));
+		offspring.push_back(generateOffspring(eo2, eo1, p1, p2));
 		eo1 = offspring[0];
 		eo2 = offspring[1];
 		oneAtLeastIsModified = true;
@@ -74,11 +75,13 @@ public:
 	{
 		oneAtLeastIsModified = false;
 	}
+	cout<<"exit crossover"<<endl;
     return oneAtLeastIsModified;
   }
 	
   EOT generateOffspring(const EOT& parent1, const EOT & parent2, unsigned int p1, unsigned int p2)
 {
+	cout << "begin generate" << endl;
 	EOT result = parent1;
 	std::vector<bool> taken_values(result.size(), false);
 	vector<int> var;
@@ -93,6 +96,7 @@ public:
 		var = parent1.getJob(i);
 		taken_values[var[0]] = true;
 	}
+	cout << "generate 1"<<endl;
 	unsigned int i = p1 + 1;
 	unsigned j = 0;
 	while (i < p2 && j < parent2.size())
@@ -104,21 +108,25 @@ public:
 		}
 		j++;
 	}
-	
+	cout << "generate 2"<<endl;
 	// maj blocs
 	int b1 = result.getBlock(p1);
 	int b2 =result.getBlock(p2);
 	int t;
-	for (int b= b1+1; b<b2;b++)
+	cout << "block"<<endl;
+	for (int b= b2-1; b>b1;b--)
 	{
 		result.deleteBlock(b);
 	}
+	cout<<"first boucle"<<endl;
 	for (int i = p1+1; i < p2; i++)
 	{
 		t = result.getJob(i)[1];
 		if (t>0)  
 			result.addBlock(++b1, i);
 	}
+	cout<<"2 boucle"<<endl;
+	cout <<"end generate" <<endl;
 	return result;	
 }
   
