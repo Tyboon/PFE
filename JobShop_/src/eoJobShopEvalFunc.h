@@ -19,6 +19,7 @@ Template for evaluator in EO, a functor that computes the fitness of an EO
 #include "eoEvalFunc.h"
 #include "Data.h"
 #include "eoJobShopOpR.h"
+#include "eoJobShopObjectiveVector.h"
 /**
   Always write a comment in this format before class definition
   if you want the class to be documented by Doxygen
@@ -29,30 +30,27 @@ class eoJobShopEvalFunc : public eoEvalFunc<EOT>
 public:
 
   eoJobShopEvalFunc(Data d)
-
   {
 	data = d;
-	evalR = eoJobShopOpR(data);
+	evalR.setData(data);
   }
   
-  vector<int> tard_early (_eo) 
+  vector<int> tard_early (EOT _eo) 
   {
 	  int t = 0;
 	  int comp = 0;
-	  vector<vector<int>> results;
+	  vector< vector<int> > results;
 	  vector<int> res(2, 0);
 	  for (int i = 0; i < data.getN(); i++) 
 	  {
-		vector<int> j = _eo.getJobShop(i);
+		vector<int> j = _eo.getJob(i);
 		Jobs job = data.getJob(j[0]);
-		results[i][0] = max(0, job.getD() - (comp + job.getP() + j[1])) ; // tardiness
-		results[i][1] = max(0, comp + j[1] - (job.getD() - job.getP())) ; //earliness
+		results[i][0] = max(0, job.getAlpha() * (job.getD() - (comp + job.getP() + j[1]))) ; // tardiness
+		results[i][1] = max(0, job.getBeta() * (comp + j[1] - (job.getD() - job.getP()))) ; //earliness
 		comp += j[1] + job.getP();
+		res[0] += results[i][0];
+		res[1] += results[i][1];
 	  }
-	  for (vector<int> v : results) 
-	  {
-		res[0] += v[0];
-		res[1] += v[1];
 	  return res;
   }
 
@@ -62,7 +60,7 @@ public:
    *                  it should stay templatized to be usable
    *                  with any fitness type
    */
-  void operator()(eoJobShop & _eo)
+  void operator()(EOT & _eo)
   {
     // test for invalid to avoid recomputing fitness of unmodified individuals
     if (_eo.invalid())

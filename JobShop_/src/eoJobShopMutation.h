@@ -50,36 +50,35 @@ public:
 	unsigned int N = eo.getSize();
 	unsigned int p1, p2; //random int;
 	eoUniformGenerator<int> rdm(0,N);
-	eoVector<int> tmp;
+	vector<int> tmp;
 	int bloc, beginB, endB;
-	do // sélectionner 2 points différents d'un même bloc
-	{
-		p1 =  rdm(); // rng.random(N);
-		tmp = eo.getJobShop(p1);
-		bloc = tmp[2]; 
-		beginB = eo.getBlock(bloc);
-		endB = eo.getBlock(bloc+1) ; 
-		eoUniformGenerator<int> rdm2(beginB,endB);
-		p2 =  rdm2(); // rng.random(N);
-	}
-	while (fabs((double) point1-point2) <= 2); // PB : si uniquement des blocs de 2 ou 1 .. ?
 	
-	// vérifie et corrige point1 < point2
-	if (p1 > p2)
-		std::swap(p1, p2);
-	
-	// si idle time 
-	if (tmp[1] > 0) 
+	p1 =  rdm(); // rng.random(N);
+	tmp = eo.getJob(p1);
+	beginB = eo.getBlock(p1);
+	int ind_begin = eo.getIndBlock(beginB);
+	endB = beginB+1; 
+	int ind_end = eo.getIndBlock(endB) ;
+	eoUniformGenerator<int> rdm2(ind_begin, ind_end);
+	p2 =  rdm2(); // rng.random(N);
+	if (p1 != p2)
 	{
-		eo.modifyBlock(bloc, p2);
-		for (int i = p1; i < p2; i++) 
+		// vérifie et corrige point1 < point2
+		if (p1 > p2)
+			std::swap(p1, p2);
+	
+		// si idle time 
+		if (tmp[1] > 0) 
 		{
-			eo.setAssociateBlock(i, bloc-1);
+			eo.modifyBlock(bloc, p2);
 		}
+		eo.putJob(p1, eo.getJob(p2)); // vérifier si copie nécessaire
+		eo.putJob(p2, tmp);
 	}
-	eo.putJobShop(p1, eo.getJobShop(p2));
-	eo.putJobShop(p2, tmp);
-	
+	else
+	{
+		isModified = false;
+	}
 	return isModified;
   }
 

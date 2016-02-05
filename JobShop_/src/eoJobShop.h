@@ -26,6 +26,8 @@ And of course write the corresponding destructor!
 #ifndef _eoJobShop_h
 #define _eoJobShop_h
 
+#include "eoJobShopObjectiveVector.h"
+
 /**
  *  Always write a comment in this format before class definition
  *  if you want the class to be documented by Doxygen
@@ -42,8 +44,8 @@ And of course write the corresponding destructor!
  * Note that operator<< and operator>> are defined at EO level
  * using these routines
  */
-template< class FitT>
-class eoJobShop: public EO<FitT> {
+
+class eoJobShop: public moeoIntVector<eoJobShopObjectiveVector> {
 public:
   /** Ctor: you MUST provide a default ctor.
    * though such individuals will generally be processed
@@ -80,7 +82,7 @@ public:
     void printOn(ostream& os) const
     {
       // First write the fitness
-      EO<FitT>::printOn(os);
+      moeoIntVector<eoJobShopObjectiveVector>::printOn(os);
       os << ' ';
     // START Code of default output
 
@@ -98,7 +100,7 @@ public:
     void readFrom(istream& is)
       {
 	// of course you should read the fitness first!
-	EO<FitT>::readFrom(is);
+	moeoIntVector<eoJobShopObjectiveVector>::readFrom(is);
     // START Code of input
 
 	/** HINTS
@@ -109,69 +111,61 @@ public:
     // END   Code of input
       }
       
-      eoVector<int> getJob(int i) 
+	vector<int> getJob(int i) const
 	{
 			return jobs[i];
 	}
 	
-	unsigned int getSize()
+	 int getSize()
 	{
 		return jobs.size();
 	}
 	
-	void putBlocks(vector<int> & v)
+	void putBlock(vector<int> & v)
 	{
 		blocks = v;
 	}
 	
-	void putJob(int j, eoVector<int> job)
+	void putJob(int j, vector<int> job)
 	{
-		jobs[j] = move(job);
-	}
-
-	// retourne l'indice du bloc dans blocks
-	int getAssociateBlock(int i) { 
-		return jobs[i][2];
+		jobs[j] = job;
 	}
 	
-	void setAssociateBlock(int i, int b) {
-		jobs[i][2] = b;	
-	}
-	
-	// retourne le numéro du 1er job du bloc 
-	int getBlock(int i) 
+	// retourne l'indice dans jobs du 1er job du bloc 
+	int getIndBlock(int i) 
 	{
 		return blocks[i];
+	}
+	
+	// Retourne l'indice du Bloc contenant le ième job
+	int getBlock(int j)
+	{	
+		int i = 0;
+		while ( blocks[i] < j) 
+		{
+			i++;
+		}
+		return i;
 	}
 	
 	void addBlock(int i, int val)
 	{
 		blocks.insert(blocks.begin() + i -1, val);
-		for ( i = val; i < jobs.size(); i++) 
-		{
-			jobs[i][2] = jobs[i][2] +1; 
-		}
 	}
 	
 	void deleteBlock(int i)
 	{
-		int j = blocks[i];
 		blocks.erase(blocks.begin() + i-1 );
-		for ( int i = j; i < jobs.size(); i++) 
-		{
-			jobs[i][2] = jobs[i][2] -1; 
-		}
 	}
 	
 	void modifyBlock(int b, int new_pos)
 	{
 		blocks[b] = new_pos;
-		jobs[new_pos][2] = b;
 	}
 	
-private:			   // put all data here
-	eoVector<eoVector<int> > jobs ; //num data, idle time, bloc
-	eoVector<int> blocks; //locus
+private: // put all data here
+	vector<vector<int> > jobs ; //num data, idle time
+	vector<int> blocks; //locus
 };
 
 #endif

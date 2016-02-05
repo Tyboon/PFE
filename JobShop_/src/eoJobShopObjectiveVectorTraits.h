@@ -12,12 +12,11 @@ Template for simple mutation operators
 #define eoJobShopObjectiveVectorTraits_H
 
 
-#include <eoOp.h>  //voir la lib to import
-
 class eoJobShopObjectiveVectorTraits: public moeoObjectiveVectorTraits {
 public: 
 	static bool minimizing(int i) { return true ;}
 	static bool maximizing(int i) { return false;}
 	static unsigned int nbObjective() {return 2;}
-}
+};
 
+#endif

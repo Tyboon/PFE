@@ -22,8 +22,8 @@ Quadratic crossover operators modify the both genotypes
  * THere is NO ASSUMPTION on the class GenoypeT.
  * In particular, it does not need to derive from EO
  */
-template<class eoJobShop>
-class eoJobShopQuadCrossover: public eoQuadOp<eiJobShop>
+template<class EOT>
+class eoJobShopQuadCrossover: public eoQuadOp<EOT>
 {
 public:
   /**
@@ -47,28 +47,25 @@ public:
    * @param eo1 The first parent
    * @param eo2 The second parent
    */
-  bool operator()(eoJobshop & _eo1, eoJobShop & _eo2)
+  bool operator()(EOT & eo1, EOT& eo2)
   { //2points
         bool oneAtLeastIsModified(true);
-	unsigned int N = _eo1.getSize();
+	unsigned int N = eo1.getSize();
 	unsigned int p1, p2; //random int;
 	eoUniformGenerator<int> rdm(0,N);
-	do
-	{
-		p1 =  rdm(); // rng.random(N);
-		p2 =  rdm(); // rng.random(N);
-	}
-	while (fabs((double) point1-point2) <= 2);
+	
+	p1 =  rdm(); // rng.random(N);
+	p2 =  rdm(); // rng.random(N);
 	
 	// vérifie et corrige point1 < point2
 	if (p1 > p2)
 		std::swap(p1, p2);
 	
-	vector<eoJobShop> offspring;
-	offspring[0] = generateOffspring(eo1, eo2, p1, p2);
-	offspring[1] = generateOffspring(eo2, eo1, p1, p2);
-	if ((eo1 != offspring[0]) || (eo2 != offspring[1]))
+	if (p1 !=p2)
 	{
+		vector< EOT > offspring;
+		offspring[0] = generateOffspring(eo1, eo2, p1, p2);
+		offspring[1] = generateOffspring(eo2, eo1, p1, p2);
 		eo1 = offspring[0];
 		eo2 = offspring[1];
 		oneAtLeastIsModified = true;
@@ -79,42 +76,46 @@ public:
 	}
     return oneAtLeastIsModified;
   }
-	//BLOCK a MAJ !! 
-  eoJobShop eoJobShopCrossoverQuad::generateOffspring(const eoJobShop & parent1, const eoJobShop & parent2, unsigned int p1, unsigned int p2)
-{
-	eoJobShop result = parent1;
-	std::vector<bool> taken_values(result.size(), false);
 	
-	for (unsigned int i =0; i <= point1; i++)
+  EOT generateOffspring(const EOT& parent1, const EOT & parent2, unsigned int p1, unsigned int p2)
+{
+	EOT result = parent1;
+	std::vector<bool> taken_values(result.size(), false);
+	vector<int> var;
+	
+	for (unsigned int i =0; i <= p1; i++)
 	{
-		taken_values[parent1.getJobShop(i)[0]] = true; // 
+		var = parent1.getJob(i);
+		taken_values[var[0]] = true; 
 	}
 	for (unsigned int i =p2; i < result.size(); i++)
 	{
-		taken_values[parent1.getJobShop(i)[0]] = true;
+		var = parent1.getJob(i);
+		taken_values[var[0]] = true;
 	}
 	unsigned int i = p1 + 1;
 	unsigned j = 0;
 	while (i < p2 && j < parent2.size())
 	{
-		if (!taken_values[parent2.getJobShop(i)[0]])
+		if (!taken_values[parent2.getJob(i)[0]])
 		{
-			result[i] = parent2.getJobShop(i);
+			result.putJob(i, parent2.getJob(i));
 			i++;
 		}
 		j++;
 	}
 	
 	// maj blocs
-	int b1 = result.getAssociateBlock(p1)
-	int b2 =result.getAssociateBlock(p2)
+	int b1 = result.getBlock(p1);
+	int b2 =result.getBlock(p2);
+	int t;
 	for (int b= b1+1; b<b2;b++)
 	{
 		result.deleteBlock(b);
 	}
 	for (int i = p1+1; i < p2; i++)
 	{
-		t = result.getJobShop(i)[1];
+		t = result.getJob(i)[1];
 		if (t>0)  
 			result.addBlock(++b1, i);
 	}

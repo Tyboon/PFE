@@ -13,9 +13,10 @@ Template for EO objects initialization in EO
 
 // include the base definition of eoInit
 #include <eoInit.h>
-#include <Parser.h>
-#include <Timing.h>
-#include <Data.h>
+#include "eoJobShop.h"
+#include "Parser.h"
+#include "Timing.h"
+#include "Data.h"
 
 /**
  *  Always write a comment in this format before class definition
@@ -36,9 +37,11 @@ public:
   {
 	data = data_;
 	int N = data.getN();
-	Timing timer = Timing(data);
-	vector<int> order = irange(0,N-1); 
-	timer.timing(& order,& time);
+	Timing<eoJobShop> timer(data);
+	vector<int> order ;
+	for (int i = 0; i < N; i++)
+		order.push_back(i);
+	timer.timing(order, time);
   }
 
 
@@ -49,32 +52,31 @@ public:
    */
   void operator()(eoJobShop & eo)
   {
-	Job job = data.getJob(i);
+	int i =0;
+	Jobs job = data.getJob(i);
 	vector<int> blocs;
-	blocs.push_back(0);
 	int bloc = 0;
-	eoVector<eoVector<int> > j;
-	j[i][0] = i;
-	j[i][1] = time[i];
-	j[i][2] = bloc; 
-	eo.putJobShop(i, j)
+	blocs.push_back(bloc);
+	vector<int> j;
+	j[0] = i;
+	j[1] = time[i];
+	eo.putJob(i, j);
 	
-	for (int i =0; i < data.getN(); i++)
+	for (i =1; i < data.getN(); i++)
 	{
-		Job job = data.getJob(i);
-		eoVector<eoVector<int> > j;
-		j[i][0] = i;
-		j[i][1] = time[i];
+		Jobs job = data.getJob(i);
+		vector<int> j;
+		j[0] = i;
+		j[1] = time[i];
 		if (time[i] > 0)
 		{
 			bloc++;
-			blocs.push_back(i)
+			blocs.push_back(i);
 		}
-		j[i][2] = bloc; 
-		eo.putJobShop(i, j)
+		eo.putJob(i, j);
 	}
-	eo.putBlocs(bloc);
-	_genotype.invalidate();	   // IMPORTANT in case the _genotype is old
+	eo.putBlock(blocs);
+	eo.invalidate();	   // IMPORTANT in case the _genotype is old
   }
 
 private:

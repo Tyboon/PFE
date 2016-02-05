@@ -17,6 +17,11 @@ SET(CMAKE_C_TARGET_INCLUDE_PATH
   ".."
   "/usr/include/paradiseo/eo"
   "/usr/include/paradiseo/eo/do"
+  "/usr/include/paradiseo/eo/es"
+  "/usr/include/paradiseo/eo/ga"
+  "/usr/include/paradiseo/eo/utils"
+  "/usr/include/paradiseo/moeo"
+  "/usr/include/paradiseo/mo"
   )
 SET(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 SET(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})

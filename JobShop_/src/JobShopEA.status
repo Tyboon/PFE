@@ -2,7 +2,7 @@
 ### GENERAL ########################################################################
 # --help=0                                 # -h : Prints this message
 # --stopOnUnknownParam=1                   # Stop if unkown param entered
-# --seed=1452867751                        # -S : Random number seed
+# --seed=1454674530                        # -S : Random number seed
 
 ### EVOLUTION ENGINE ###############################################################
 # --popSize=20                             # -P : Population Size

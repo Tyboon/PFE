@@ -8,13 +8,17 @@
 #include <stdexcept>
 #include <fstream>
 
+#include "eoJobShopObjectiveVector.h"
+#include "eoJobShop.h"
 #include "Data.h"
 
-class eoJobShopOpR : public eoEvalFunc<EOT>
+class eoJobShopOpR 
 {
 public:
 
-  eoJobShopOpR(Data _data)
+  eoJobShopOpR () {}
+
+  void setData(Data _data)
 	{
 		data = _data;
 	}
@@ -32,11 +36,12 @@ public:
 	bool isModified(true);
 	int comp = 0;
 	int diff = 0;
+	int size = eo.getSize();
 	  
-	for (int i = 0; i < eo.getSize(); i++)
+	for (int i = 0; i < size; i++)
 	{
-		eoVector<int> job = eo.getJob(i);
-		diff = data.getR(job[0]) - (comp + job[1] );
+		vector<int> job = eo.getJob(i);
+		diff = data.getJob(0).getR() - (comp + job[1] );
 		if (diff > 0)
 		{
 			if (job[1] > 0)

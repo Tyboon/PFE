@@ -12,7 +12,7 @@ public:
 		data=_data;
 	}
 	bool operator()(GenotypeT & _genotype)
-	{
+	{/*
 		vector<int> ordre;
 		vector<bool> dejaVus;
 		vector<int>  temps;
@@ -24,6 +24,7 @@ public:
 		timing(ordre,temps);
 		miseAJour(0,data.getN()-1,temps,ordre,dejaVus,_genotype);
 		return true;
+		*/
 	}
 	void miseAJour(int S1, int S2, const vector<int> & timing, const vector<int> & numjobs, vector<bool> & dejaVus,GenotypeT & _genotype)
     {

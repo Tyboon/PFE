@@ -5,9 +5,6 @@
 INCLUDE_DIRECTORIES(/home/emilie/workspace/PFE/JobShop_/src)
 INCLUDE_DIRECTORIES(/usr/include/paradiseo/eo/)
 INCLUDE_DIRECTORIES(/usr/include/paradiseo/eo/do/)
-INCLUDE_DIRECTORIES(/usr/include/paradiseo/eo/es/)
-INCLUDE_DIRECTORIES(/usr/include/paradiseo/eo/ga/)
-INCLUDE_DIRECTORIES(/usr/include/paradiseo/eo/utils/)
 INCLUDE_DIRECTORIES(/usr/include/paradiseo/moeo/)
 INCLUDE_DIRECTORIES(/usr/include/paradiseo/mo/)
 ######################################################################################

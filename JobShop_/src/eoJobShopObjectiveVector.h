@@ -11,10 +11,10 @@ Template for simple mutation operators
 #ifndef eoJobShopObjectiveVector_H
 #define eoJobShopObjectiveVector_H
 
+#include <moeo>
+#include "eoJobShopObjectiveVectorTraits.h"
 
-#include <eoOp.h>  //voir la lib to import
+typedef moeoRealObjectiveVector<eoJobShopObjectiveVectorTraits> eoJobShopObjectiveVector;
 
-class eoJobShopObjectiveVector: public moeoObjectiveVector {
-public: 
-	typedef moeoRealObjectiveVector<FlowShopObjectiveVectorTraits> FlowShopObjectiveVector;
-}
+
+#endif
