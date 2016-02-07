@@ -75,6 +75,10 @@ public:
 	{
 		oneAtLeastIsModified = false;
 	}
+	if  (! eo1.isValidBlock() )
+		cout << "ERROR block 1 "<< endl;
+	if  (! eo2.isValidBlock() )
+		cout << "ERROR block 2 "<< endl;
 	cout<<"exit crossover"<<endl;
     return oneAtLeastIsModified;
   }
@@ -114,7 +118,7 @@ public:
 	int b2 =result.getBlock(p2);
 	int t;
 	cout << "block"<<endl;
-	for (int b= b2-1; b>b1;b--)
+	for (int b= b2-1; b>=b1;b--)
 	{
 		result.deleteBlock(b);
 	}

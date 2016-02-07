@@ -60,13 +60,24 @@ public:
 	beginB = eo.getBlock(p1);
 	int ind_begin = eo.getIndBlock(beginB);
 	endB = beginB+1; 
-	int ind_end = eo.getIndBlock(endB) ;
+	int ind_end;
+	if (endB >= eo.getBlockSize())
+	{
+		ind_end = eo.getSize();
+	} 
+	else
+	{
+		ind_end = eo.getIndBlock(endB) ;
+	}
 	cout<<"bloc "<<beginB<<" "<<endB<<" "<<eo.getBlockSize()<<endl;
+	cout << "indice "<< ind_begin<<" "<<ind_end<<endl;
 	eoUniformGenerator<int> rdm2(ind_begin, ind_end);
 	p2 =  rdm2(); // rng.random(N);
+	
 	if (p1 != p2)
 	{
 		cout<<"test 3"<<endl;
+		vector<int> tmp2 = eo.getJob(p2);
 		// vérifie et corrige point1 < point2
 		if (p1 > p2)
 			std::swap(p1, p2);
@@ -74,16 +85,20 @@ public:
 		// si idle time 
 		if (tmp[1] > 0) 
 		{
-			eo.modifyBlock(beginB, p2);
+			int var = tmp[1];
+			tmp[1] = 0;
+			tmp2[1] = var;
 		}
 		cout<<"test4"<<endl;
-		eo.putJob(p1, eo.getJob(p2)); // vérifier si copie nécessaire
+		eo.putJob(p1, tmp2); // vérifier si copie nécessaire
 		eo.putJob(p2, tmp);
 	}
 	else
 	{
 		isModified = false;
 	}
+		if  (! eo.isValidBlock() )
+		cout << "ERROR block "<< endl;
 	cout<< "exit mutation"<<endl;
 	return isModified;
   }

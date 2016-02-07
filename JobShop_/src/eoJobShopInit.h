@@ -62,6 +62,13 @@ public:
 	vector<int> j(2,0);
 	j[0] = order[i];
 	j[1] = time[i] - data.getJob(order[i]).getP() ;
+	  
+	 for (i = 0; i < N; i++)
+	{
+	if (time[i] - data.getJob(order[i]).getP() < data.getJob(order[i]).getR())
+		cout<<"probleme "<< data.getJob(order[i]).getR()<<" "<< time[i] <<" "<< data.getJob(order[i]).getP() ;
+	}
+	  
 	cout<<"time 0 : "<<time[0]<<endl;
 	eo.addJob(j);
 	
@@ -78,6 +85,11 @@ public:
 		eo.addJob(j);
 	}
 	eo.putBlock(blocs);
+	
+	eo.printJob();
+	
+	if  (! eo.isValidBlock() )
+		cout << "ERROR block "<< endl;
 	eo.invalidate();	   // IMPORTANT in case the _genotype is old
   }
 

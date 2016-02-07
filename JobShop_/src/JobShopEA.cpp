@@ -133,9 +133,9 @@ int main (int argc, char *argv[])
     
 
     // printing of the final population
-    /*cout << "Final Population\n";
+    cout << "Final Population\n";
     pop.sortedPrintOn(cout);
-    cout << endl;*/
+    cout << endl;
 
     // printing of the final archive
     //std::cout << "Final Archive " << std::endl;

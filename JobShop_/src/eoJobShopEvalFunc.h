@@ -78,6 +78,8 @@ public:
 	objVec[1] = res[1];
 	_eo.objectiveVector(objVec);
       }
+      	if  (! _eo.isValidBlock() )
+		cout << "ERROR block "<< endl;
       cout<<"exit eval counter"<<endl;
   }
 

@@ -42,7 +42,7 @@ public:
 	for (int i = 0; i < size; i++)
 	{
 		vector<int> job = eo.getJob(i);
-		diff = data.getJob(i).getR() - (comp + job[1] );
+		diff = data.getJob(job[0]).getR() - (comp + job[1] );
 		cout<<i<<" "<<diff<<endl;
 		if (diff > 0)
 		{
@@ -60,7 +60,7 @@ public:
 			}	
 			eo.putJob(i, job);
 		}
-		comp += job[1] + data.getJob(i).getP();
+		comp += job[1] + data.getJob(job[0]).getP();
 	}
 	cout<<"toutou"<<endl;
 	cout<<"exit opR"<<endl;

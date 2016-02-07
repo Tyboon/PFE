@@ -146,10 +146,11 @@ public:
 	int getBlock(int j)
 	{	
 		int i = 0;
-		while ( blocks[i] < j) 
+		while ( i< blocks.size() && blocks[i] < j) 
 		{
 			i++;
 		}
+		if (i ==0) return 0;
 		return i-1;
 	}
 	
@@ -160,7 +161,7 @@ public:
 	
 	void deleteBlock(int i)
 	{
-		cout<<"print i block"<<i<<endl;
+		cout<<"print i block"<<i<<" "<<blocks.size()<<endl;
 		blocks.erase(blocks.begin() + i);
 	}
 	
@@ -173,6 +174,27 @@ public:
 	{
 		return blocks.size();
 	}
+	
+	bool isValidBlock() 
+	{
+		for (int i = 1; i < blocks.size(); i++)
+		{
+			if  (blocks[i-1] >= blocks[i])
+				return false;
+		}
+		return true;
+	}
+	
+		
+	void printJob() 
+	{
+		int N = jobs.size();
+		for (int i =0; i < N; i++)
+		{
+			cout<<"JOB "<<i<<" : "<<jobs[i][0] <<" " <<jobs[i][1]<<endl;
+		}
+	}
+	
 private: // put all data here
 	vector<vector<int> > jobs ; //num data, idle time
 	vector<int> blocks; //locus
