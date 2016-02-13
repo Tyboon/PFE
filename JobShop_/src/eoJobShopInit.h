@@ -52,31 +52,43 @@ public:
 	  
 	vector<int> order ;
 	for (int i = 0; i < N; i++)
+	{
 		order.push_back(i);
+	}
+	
 	random_shuffle ( order.begin(), order.end() );
+	for (int i = 0; i < N; i++)
+	{
+		order.push_back(i);
+	}
 	timer.timing(order, time);
+	
+	for (int i = 0; i < N; i++)
+	{
+		order.push_back(i);
+	}
+	cout<<endl;
+	
 	int i =0;
 	vector<int> blocs;
 	int bloc = 0;
 	blocs.push_back(bloc);
 	vector<int> j(2,0);
 	j[0] = order[i];
-	j[1] = time[i] - data.getJob(order[i]).getP() ;
+	j[1] = (time[i] - data.getJob(order[i]).getP()) ;
 	  
-	 for (i = 0; i < N; i++)
+	for (i = 0; i < N; i++)
 	{
-	if (time[i] - data.getJob(order[i]).getP() < data.getJob(order[i]).getR())
-		cout<<"probleme "<< data.getJob(order[i]).getR()<<" "<< time[i] <<" "<< data.getJob(order[i]).getP() ;
+		if (time[i] - data.getJob(order[i]).getP() < data.getJob(order[i]).getR())
+			cout<<"probleme "<< data.getJob(order[i]).getR()<<" "<< time[i] <<" "<< data.getJob(order[i]).getP() ;
 	}
 	  
-	cout<<"time 0 : "<<time[0]<<endl;
 	eo.addJob(j);
-	
 	for (i =1; i < N; i++)
 	{
 		vector<int> j(2,0);
 		j[0] = order[i];
-		j[1] = time[i] - time[i-1] - data.getJob(order[i]).getP() ;
+		j[1] = (time[i] - time[i-1] - data.getJob(order[i]).getP()) ;
 		if (j[1] > 0)
 		{
 			bloc++;
@@ -87,9 +99,10 @@ public:
 	eo.putBlock(blocs);
 	
 	eo.printJob();
+	eo.printBlock();
 	
 	if  (! eo.isValidBlock() )
-		cout << "ERROR block "<< endl;
+		cout << "ERROR init block "<< endl;
 	eo.invalidate();	   // IMPORTANT in case the _genotype is old
   }
 

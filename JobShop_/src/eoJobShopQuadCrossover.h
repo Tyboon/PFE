@@ -83,54 +83,71 @@ public:
     return oneAtLeastIsModified;
   }
 	
-  EOT generateOffspring(const EOT& parent1, const EOT & parent2, unsigned int p1, unsigned int p2)
+  EOT generateOffspring( EOT& parent1, EOT & parent2, unsigned int p1, unsigned int p2)
 {
-	cout << "begin generate" << endl;
-	EOT result = parent1;
-	std::vector<bool> taken_values(result.size(), false);
+	EOT result = eoJobShop();
+	vector<int> b = parent1.getBlocks();
+	result.putBlock(b);
+	
+	std::vector<bool> taken_values(parent1.getSize(), false);
 	vector<int> var;
 	
-	for (unsigned int i =0; i <= p1; i++)
+	parent1.printJob();
+	parent1.printBlock();
+	parent2.printJob();
+	parent2.printBlock();
+	
+	for (unsigned int i =0; i < parent1.getSize(); i++)
 	{
-		var = parent1.getJob(i);
-		taken_values[var[0]] = true; 
+		if (i>p1 && i<p2)
+		{
+			vector<int> v(2,0);
+			result.addJob(v);
+		} 
+		else
+		{
+			var = parent1.getJob(i);
+			taken_values[var[0]] = true; 
+			result.addJob(var);
+		}
 	}
-	for (unsigned int i =p2; i < result.size(); i++)
-	{
-		var = parent1.getJob(i);
-		taken_values[var[0]] = true;
-	}
-	cout << "generate 1"<<endl;
+
 	unsigned int i = p1 + 1;
 	unsigned j = 0;
-	while (i < p2 && j < parent2.size())
+	while (i < p2 && j < parent2.getSize())
 	{
-		if (!taken_values[parent2.getJob(i)[0]])
+		if (!taken_values[parent2.getJob(j)[0]])
 		{
-			result.putJob(i, parent2.getJob(i));
+			result.putJob(i, parent2.getJob(j));
 			i++;
 		}
 		j++;
 	}
-	cout << "generate 2"<<endl;
+	
+	
+	
 	// maj blocs
 	int b1 = result.getBlock(p1);
-	int b2 =result.getBlock(p2);
+	int b2 = result.getBlock(p2);
 	int t;
-	cout << "block"<<endl;
-	for (int b= b2-1; b>=b1;b--)
+	if ((result.getJob(p2)[1] == 0) && (b2 != 0) && (b1 != b2)) // pas le bloc 0 ou le même bloc que 1
+		result.deleteBlock(b2);
+	for (int b= b2-1; b>b1;b--)
 	{
 		result.deleteBlock(b);
 	}
-	cout<<"first boucle"<<endl;
 	for (int i = p1+1; i < p2; i++)
 	{
 		t = result.getJob(i)[1];
 		if (t>0)  
-			result.addBlock(++b1, i);
+		{
+			b1++;
+			result.addBlock(b1, i);
+		}
 	}
-	cout<<"2 boucle"<<endl;
-	cout <<"end generate" <<endl;
+
+	result.printJob();
+	result.printBlock();
 	return result;	
 }
   

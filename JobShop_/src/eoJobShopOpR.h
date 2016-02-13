@@ -38,31 +38,27 @@ public:
 	int comp = 0;
 	int diff = 0;
 	int size = eo.getSize();
-	  cout<< "Tou"<<endl;
 	for (int i = 0; i < size; i++)
 	{
 		vector<int> job = eo.getJob(i);
 		diff = data.getJob(job[0]).getR() - (comp + job[1] );
-		cout<<i<<" "<<diff<<endl;
 		if (diff > 0)
 		{
 			if (job[1] > 0) 
 			{
 				job[1] += diff;
-				cout<< "if1"<<endl;
 			}
 			else
 			{
 				job[1] += diff;
-				cout<< "if2"<<endl;
 				eo.addBlock(eo.getBlock(i)+1, i);
-				cout<< "if2"<<endl;
 			}	
 			eo.putJob(i, job);
 		}
 		comp += job[1] + data.getJob(job[0]).getP();
 	}
-	cout<<"toutou"<<endl;
+	eo.printJob();
+	eo.printBlock();
 	cout<<"exit opR"<<endl;
 	return isModified;
   }

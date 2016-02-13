@@ -121,9 +121,14 @@ public:
 		return jobs.size();
 	}
 	
-	void putBlock(vector<int> & v)
+	void putBlock(vector<int> v)
 	{
 		blocks = v;
+	}
+	
+	void putJobs(vector<vector<int> > & jobs_)
+	{
+		jobs = jobs_;
 	}
 	
 	void putJob(int j, vector<int> job)
@@ -154,6 +159,11 @@ public:
 		return i-1;
 	}
 	
+	vector<int> getBlocks()
+	{
+		return blocks;
+	}
+	
 	void addBlock(int i, int val)
 	{
 		blocks.insert(blocks.begin() + i , val);
@@ -161,7 +171,6 @@ public:
 	
 	void deleteBlock(int i)
 	{
-		cout<<"print i block"<<i<<" "<<blocks.size()<<endl;
 		blocks.erase(blocks.begin() + i);
 	}
 	
@@ -189,10 +198,23 @@ public:
 	void printJob() 
 	{
 		int N = jobs.size();
+		cout<<"JOB ";
 		for (int i =0; i < N; i++)
 		{
-			cout<<"JOB "<<i<<" : "<<jobs[i][0] <<" " <<jobs[i][1]<<endl;
+			if (jobs[i][1] > 0)
+				cout<<jobs[i][0] <<"("<<jobs[i][1]<<")";
+			else 
+				cout<<jobs[i][0]<<"-";
 		}
+		cout<<endl;
+	}
+	
+	void printBlock()
+	{
+		cout<<"BLOCK";
+		for (int i = 0; i < blocks.size(); i++)
+			cout<<blocks[i]<<" ";
+		cout<<endl;
 	}
 	
 private: // put all data here

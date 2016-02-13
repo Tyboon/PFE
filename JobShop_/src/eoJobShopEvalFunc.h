@@ -46,8 +46,8 @@ public:
 		vector<int> j = _eo.getJob(i);
 		Jobs job = data.getJob(j[0]);
 		vector<int> r(2,0);
-		r[0] = max(0, job.getAlpha() * (job.getD() - (comp + job.getP() + j[1]))) ; // tardiness
-		r[1] = max(0, job.getBeta() * (comp + j[1] - (job.getD() - job.getP()))) ; //earliness
+		r[0] = max(0, job.getAlpha() * (job.getD() - (comp + job.getP() + j[1]))) ; // earliness
+		r[1] = max(0, job.getBeta() * (comp + j[1] - (job.getD() - job.getP()))) ; //tardiness
 		results.push_back(r);
 		comp += j[1] + job.getP();
 		res[0] += results[i][0];
@@ -79,7 +79,7 @@ public:
 	_eo.objectiveVector(objVec);
       }
       	if  (! _eo.isValidBlock() )
-		cout << "ERROR block "<< endl;
+		cout << "ERROR eval block "<< endl;
       cout<<"exit eval counter"<<endl;
   }
 
