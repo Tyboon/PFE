@@ -34,6 +34,8 @@ public:
   bool operator()(eoJobShop & eo)
   {
 	cout<<"enter opR"<<endl;
+	eo.printJob();
+	eo.printBlock();
 	bool isModified(true);
 	int comp = 0;
 	int diff = 0;

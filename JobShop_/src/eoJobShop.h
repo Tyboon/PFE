@@ -136,6 +136,28 @@ public:
 		jobs[j] = job;
 	}
 	
+	void insertJob(int pos, vector<int> val) //Si le job contient un idle time on l'enlève, Si ajout en début report de l'idle time 
+	{
+		int b = getBlock(pos);
+		if (val[1] >0)
+			val[1] =0;
+		if (blocks[b] == pos)
+		{
+			val[1] = jobs[pos][1];
+			jobs[pos][1] = 0;
+		}
+		jobs.insert(jobs.begin() + pos , val);
+	}
+	
+	void deleteJob(int i) // Si début de bloc report de l'idle time au suivant
+	{
+		if (jobs[i][1] > 0)
+		{
+			jobs[i+1][1] = jobs[i][1];
+		}
+		jobs.erase(jobs.begin() + i);
+	}
+	
 	void addJob(vector<int> job)
 	{
 		jobs.push_back(job);
@@ -151,7 +173,7 @@ public:
 	int getBlock(int j)
 	{	
 		int i = 0;
-		while ( i< blocks.size() && blocks[i] < j) 
+		while ( i< blocks.size() && blocks[i] <= j) 
 		{
 			i++;
 		}
