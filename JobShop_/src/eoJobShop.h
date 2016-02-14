@@ -116,6 +116,10 @@ public:
 			return jobs[i];
 	}
 	
+	void modifyIdleT(int pos, int val)
+	{
+		jobs[pos][1] = val;
+	}
 	 int getSize()
 	{
 		return jobs.size();

@@ -14,6 +14,7 @@ using namespace std;
 #include "eoJobShop.h"
 #include "eoJobShopEvalFunc.h"
 #include "eoJobShopExtract.h"
+#include "eoJobShopSubblock.h"
 
 typedef eoJobShop Indi;
 
@@ -60,7 +61,8 @@ int main (int argc, char *argv[])
     // A (first) crossover (possibly use the parser in its Ctor)
     eoJobShopQuadCrossover<Indi> cross;
     //eoJobShopMutation<Indi> mut;
-    eoJobShopExtract<Indi> mut;
+    //eoJobShopExtract<Indi> mut;
+    eoJobShopSubblock<Indi> mut;
     // eoUCPWindowMutation<Indi> w_mut;
     //eoUCPWindowCrossover<Indi> w_cross;
 	  
