@@ -60,41 +60,34 @@ int main (int argc, char *argv[])
 
     // A (first) crossover (possibly use the parser in its Ctor)
     eoJobShopQuadCrossover<Indi> cross;
-    //eoJobShopMutation<Indi> mut;
+    eoJobShopMutation<Indi> mut;
     //eoJobShopExtract<Indi> mut;
-    eoJobShopSubblock<Indi> mut;
-    // eoUCPWindowMutation<Indi> w_mut;
+    eoJobShopSubblock<Indi> mut1;
     //eoUCPWindowCrossover<Indi> w_cross;
 	  
     double pCross = parser.createParam(0.6, "pCross", "Probability of Crossover", 'C', "Variation Operators" ).value();
     //double pCross1 = parser.getORcreateParam(0.6, "pCross1", "Probability of Crossover", 'x', "Variation Operators" ).value();
 
-    //double pWCross = parser.getORcreateParam(0.7, "pWCross", "Probability of Window-Crossover", 'W', "Variation Operators" ).value();
     // minimum check
     if ( (pCross < 0) || (pCross > 1) )
       throw runtime_error("Invalid pCross");
 
-    //double pMut1 = parser.getORcreateParam(0.1, "pMut1", "Probability of Mutation", '1', "Variation Operators" ).value();
+    double pMut1 = parser.getORcreateParam(1., "pMut1", "Probability of Mutation", '1', "Variation Operators" ).value();
 
-    //double pWMut = parser.getORcreateParam(0.3, "pWMut", "Probability of Window-Mutation", 'w', "Variation Operators" ).value();
     // minimum check 
-    //if ( (pMut1 < 0) || (pMut1 > 1) )
-      //throw runtime_error("Invalid pMut");
+    if ( (pMut1 < 0) || (pMut1 > 1) )
+      throw runtime_error("Invalid pMut");
 
-    //eoPropCombinedQuadOp<Indi> cross(cross1,pCross);
-    //cross.add(w_cross,pWCross);
-
-    //eoPropCombinedMonOp<Indi> mut(mut1, pMut1);
-    //mut.add(w_mut,pWMut);
-
-    double pMut = parser.createParam(0.1, "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
+    double pMut = parser.createParam(0., "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
     if ( (pMut < 0) || (pMut > 1) )
         throw runtime_error("Invalid pCross");
-    // generate initial population
-     eoSGAGenOp<Indi> op(cross, pCross, mut, pMut);
+  
+    eoPropCombinedMonOp<Indi> mutCombined(mut, pMut);
+    mutCombined.add(mut1,pMut1);
+    double pMutCombined = parser.getORcreateParam(0.1, "pMutCombined", "Probability of Mutation", '1', "Variation Operators" ).value();
     
     // // initialize the population
-     eoPop<Indi>& pop   = make_pop(parser, state, init);
+	eoPop<Indi>& pop   = make_pop(parser, state, init);
     eoFileMonitor   *myFileMonitor;
  
     int algo = parser.createParam(0, "algo", "Choose algorithm 0 = NSGA-II, 1 = IBEA", 'A', "Algorithm").value();
@@ -114,16 +107,15 @@ int main (int argc, char *argv[])
      
     if ( algo == 0 ) {
    	 // build NSGA-II
-        moeoNSGAII < Indi > nsgaII (MAX_GEN, eval, cross, pCross, mut, pMut);
+        moeoNSGAII < Indi > nsgaII (MAX_GEN, eval, cross, pCross, mutCombined, pMutCombined);
         //moeoNSGAII < Indi > nsgaII (checkpoint, eval, op);
     	// run the algo
         
     	nsgaII (pop);
-        cout << "test"<<endl;
 
     } else {
     	moeoAdditiveEpsilonBinaryMetric<eoJobShopObjectiveVector> indicator;
-    	moeoIBEA<Indi> ibea (MAX_GEN, eval, cross, pCross, mut, pMut, indicator);
+    	moeoIBEA<Indi> ibea (MAX_GEN, eval, cross, pCross, mutCombined, pMutCombined, indicator);
     	ibea (pop);
     }
 
@@ -146,8 +138,5 @@ int main (int argc, char *argv[])
     arch.sortedPrintOn(std::cout);
     std::cout << std::endl;
     
-
-
-
     return EXIT_SUCCESS;
 }

@@ -65,8 +65,10 @@ public:
 	if (p1 !=p2)
 	{
 		vector< EOT > offspring;
-		offspring.push_back(generateOffspring(eo1, eo2, p1, p2));
-		offspring.push_back(generateOffspring(eo2, eo1, p1, p2));
+		int max_d = eo1.getMaxD();
+		Data data = eo1.getData();
+		offspring.push_back(generateOffspring(eo1, eo2, p1, p2, max_d, data));
+		offspring.push_back(generateOffspring(eo2, eo1, p1, p2, max_d, data));
 		eo1 = offspring[0];
 		eo2 = offspring[1];
 		oneAtLeastIsModified = true;
@@ -83,11 +85,13 @@ public:
     return oneAtLeastIsModified;
   }
 	
-  EOT generateOffspring( EOT& parent1, EOT & parent2, unsigned int p1, unsigned int p2)
+  EOT generateOffspring( EOT& parent1, EOT & parent2, unsigned int p1, unsigned int p2, int max_d, Data data)
 {
 	EOT result = eoJobShop();
 	vector<int> b = parent1.getBlocks();
 	result.putBlock(b);
+	result.putMaxD(max_d);
+	result.putData(data);
 	
 	std::vector<bool> taken_values(parent1.getSize(), false);
 	vector<int> var;

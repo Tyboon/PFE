@@ -27,6 +27,7 @@ And of course write the corresponding destructor!
 #define _eoJobShop_h
 
 #include "eoJobShopObjectiveVector.h"
+#include "Data.h"
 
 /**
  *  Always write a comment in this format before class definition
@@ -243,9 +244,49 @@ public:
 		cout<<endl;
 	}
 	
+	int getMaxD()
+	{
+		return max_d;
+	}
+	
+	void putMaxD(int d)
+	{
+		max_d = d;
+	}
+	
+	
+	int getComp(int j)
+	{	
+		cout<<"Enter getComp "<<j<<endl;
+		int comp = 0;
+		int i = 0;
+		vector<int> job(2,0);
+		while  (i < j)
+		{
+			job = jobs[i];
+			comp += (job[1] + data.getJob(job[0]).getP());
+			i++;
+		}
+		comp += jobs[i][1];
+		cout<<"Exit getComp "<<comp<<endl;
+		return comp;
+	}
+	
+	Data getData()
+	{
+		return data;
+	}
+	
+	void putData(Data data_)
+	{
+		data= data_;
+	}
+	
 private: // put all data here
 	vector<vector<int> > jobs ; //num data, idle time
 	vector<int> blocks; //locus
+	int max_d;
+	Data data;
 };
 
 #endif

@@ -101,6 +101,9 @@ public:
 	eo.printJob();
 	eo.printBlock();
 	
+	eo.putData(data);
+	eo.putMaxD(data.getMaxD());
+	
 	if  (! eo.isValidBlock() )
 		cout << "ERROR init block "<< endl;
 	eo.invalidate();	   // IMPORTANT in case the _genotype is old
