@@ -2,18 +2,18 @@
 ### GENERAL ########################################################################
 # --help=0                                 # -h : Prints this message
 # --stopOnUnknownParam=1                   # Stop if unkown param entered
-# --seed=1454807926                        # -S : Random number seed
+# --seed=1455636887                        # -S : Random number seed
 
 ### ALGORITHM ######################################################################
-# --algo=0                                 # -A : Choose algorithm 0 = NSGA-II, 1 = IBEA
+--algo=0                                 # -A : Choose algorithm 0 = NSGA-II, 1 = IBEA
 # --maxtime=100                            # -t : temps maximal
 
 ### EVOLUTION ENGINE ###############################################################
-# --popSize=20                             # -P : Population Size
+--popSize=100                            # -P : Population Size
 
 ### PARAM ##########################################################################
-# --inputFile=../../DataOneMachine/bky20/bky20_1.txt # -I : File which describes input information
-# --maxGen=100                             # -G : Maximum number of generations
+--inputFile=../../DataOneMachine/bky100/bky100_1.txt # -I : File which describes input information
+# --maxGen=500                             # -G : Maximum number of generations
 
 ### PERSISTENCE ####################################################################
 # --Load=                                  # -L : A save file to restart from
@@ -21,5 +21,8 @@
 # --status=./JobShopEA.status              # Status file
 
 ### VARIATION OPERATORS ############################################################
-# --pCross=0.6                             # -C : Probability of Crossover
-# --pMut=0.1                               # -M : Probability of Mutation
+--pCross=0.2                             # -C : Probability of Crossover
+# --pMut1=1                                # -S : Probability of Mutation
+# --pMut2=1                                # -E : Probability of Mutation
+# --pMut=1                                 # -M : Probability of Mutation
+# --pMutCombined=0.1                       # -W : Probability of Mutation

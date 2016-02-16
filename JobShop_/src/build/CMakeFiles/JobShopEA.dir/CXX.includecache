@@ -27,6 +27,8 @@ eoJobShopInit.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopInit.h
 eoJobShopQuadCrossover.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopQuadCrossover.h
+eoJobShopMask.h
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopMask.h
 eoJobShopMutation.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopMutation.h
 Parser.h
@@ -39,6 +41,12 @@ eoJobShop.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShop.h
 eoJobShopEvalFunc.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopEvalFunc.h
+eoJobShopExtract.h
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopExtract.h
+eoJobShopSubblock.h
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopSubblock.h
+eoJobShopLox.h
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopLox.h
 make_pop.h
 -
 
@@ -61,6 +69,8 @@ eoOp.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShop.h
 eoJobShopObjectiveVector.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopObjectiveVector.h
+Data.h
+/home/emilie/workspace/PFE/JobShop_/src/Data.h
 
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopEvalFunc.h
 stdexcept
@@ -76,6 +86,10 @@ eoJobShopOpR.h
 eoJobShopObjectiveVector.h
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopObjectiveVector.h
 
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopExtract.h
+eoOp.h
+-
+
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopInit.h
 eoInit.h
 -
@@ -87,6 +101,14 @@ Timing.h
 /home/emilie/workspace/PFE/JobShop_/src/Timing.h
 Data.h
 /home/emilie/workspace/PFE/JobShop_/src/Data.h
+
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopLox.h
+eoOp.h
+-
+
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopMask.h
+eoOp.h
+-
 
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopMutation.h
 eoOp.h
@@ -113,6 +135,10 @@ Data.h
 /home/emilie/workspace/PFE/JobShop_/src/Data.h
 
 /home/emilie/workspace/PFE/JobShop_/src/eoJobShopQuadCrossover.h
+eoOp.h
+-
+
+/home/emilie/workspace/PFE/JobShop_/src/eoJobShopSubblock.h
 eoOp.h
 -
 

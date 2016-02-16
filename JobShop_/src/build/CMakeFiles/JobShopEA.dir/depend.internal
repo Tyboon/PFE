@@ -9,12 +9,16 @@ CMakeFiles/JobShopEA.dir/JobShopEA.o
  /home/emilie/workspace/PFE/JobShop_/src/Timing.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShop.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopEvalFunc.h
+ /home/emilie/workspace/PFE/JobShop_/src/eoJobShopExtract.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopInit.h
+ /home/emilie/workspace/PFE/JobShop_/src/eoJobShopLox.h
+ /home/emilie/workspace/PFE/JobShop_/src/eoJobShopMask.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopMutation.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopObjectiveVector.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopObjectiveVectorTraits.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopOpR.h
  /home/emilie/workspace/PFE/JobShop_/src/eoJobShopQuadCrossover.h
+ /home/emilie/workspace/PFE/JobShop_/src/eoJobShopSubblock.h
  /usr/include/paradiseo/eo/EO.h
  /usr/include/paradiseo/eo/PO.h
  /usr/include/paradiseo/eo/apply.h
