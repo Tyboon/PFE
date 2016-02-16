@@ -7,6 +7,8 @@ using namespace std;
 #include "Data.h"
 #include "eoJobShopInit.h"
 #include "eoJobShopQuadCrossover.h"
+
+#include "eoJobShopMask.h"
 #include "eoJobShopMutation.h"
 #include "Parser.h"
 #include "eoJobShopObjectiveVectorTraits.h"
@@ -59,7 +61,8 @@ int main (int argc, char *argv[])
     eoJobShopInit<Indi> init(data);
 
     // A (first) crossover (possibly use the parser in its Ctor)
-    eoJobShopQuadCrossover<Indi> cross;
+    // eoJobShopQuadCrossover<Indi> cross;
+    eoJobShopMask<Indi> cross;
     eoJobShopMutation<Indi> mut;
     //eoJobShopExtract<Indi> mut;
     eoJobShopSubblock<Indi> mut1;
