@@ -46,9 +46,9 @@ public:
    */
   bool operator()(eoJobShop & eo)
   {
-	cout<<"enter mutation extract"<<endl;
-	eo.printJob();
-	eo.printBlock();
+	//cout<<"enter mutation extract"<<endl;
+	//eo.printJob();
+	//eo.printBlock();
 	bool isModified(true);
 	unsigned int N = eo.getSize();
 	unsigned int p1, p2; //random int;
@@ -70,12 +70,12 @@ public:
 	{
 		ind_end = eo.getIndBlock(endB) ;
 	}
-	cout<<"bloc "<<beginB<<" "<<endB<<" "<<eo.getBlockSize()<<endl;
-	cout<< "indice "<< ind_begin<<" "<<ind_end<<endl;
+	////cout<<"bloc "<<beginB<<" "<<endB<<" "<<eo.getBlockSize()<<endl;
+	////cout<< "indice "<< ind_begin<<" "<<ind_end<<endl;
 	
 	eoUniformGenerator<int> rdm2(ind_begin, ind_end);
 	p2 =  rdm2(); // rng.random(N);
-	cout<<" p1 p2"<<p1<<" "<<p2<<endl;
+	////cout<<" p1 p2"<<p1<<" "<<p2<<endl;
 	
 	if (p1 != p2)
 	{
@@ -86,11 +86,11 @@ public:
 	{
 		isModified = false;
 	}
-	if  (! eo.isValidBlock() )
-		cout << "ERROR block "<< endl;
-	eo.printJob();
-	eo.printBlock();
-	cout<< "exit mutation extract"<<endl;
+	//if  (! eo.isValidBlock() )
+		////cout << "ERROR block "<< endl;
+	//eo.printJob();
+	//eo.printBlock();
+	////cout<< "exit mutation extract"<<endl;
 	return isModified;
   }
 

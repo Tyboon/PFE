@@ -67,7 +67,7 @@ public:
 	{
 		order.push_back(i);
 	}
-	cout<<endl;
+	////cout<<endl;
 	
 	int i =0;
 	vector<int> blocs;
@@ -77,11 +77,11 @@ public:
 	j[0] = order[i];
 	j[1] = (time[i] - data.getJob(order[i]).getP()) ;
 	  
-	for (i = 0; i < N; i++)
+	/**for (i = 0; i < N; i++)
 	{
 		if (time[i] - data.getJob(order[i]).getP() < data.getJob(order[i]).getR())
-			cout<<"probleme "<< data.getJob(order[i]).getR()<<" "<< time[i] <<" "<< data.getJob(order[i]).getP() ;
-	}
+			////cout<<"probleme "<< data.getJob(order[i]).getR()<<" "<< time[i] <<" "<< data.getJob(order[i]).getP() ;
+	}**/
 	  
 	eo.addJob(j);
 	for (i =1; i < N; i++)
@@ -98,14 +98,14 @@ public:
 	}
 	eo.putBlock(blocs);
 	
-	eo.printJob();
-	eo.printBlock();
+	//eo.printJob();
+	//eo.printBlock();
 	
 	eo.putData(data);
 	eo.putMaxD(data.getMaxD());
 	
-	if  (! eo.isValidBlock() )
-		cout << "ERROR init block "<< endl;
+	//if  (! eo.isValidBlock() )
+		////cout << "ERROR init block "<< endl;
 	eo.invalidate();	   // IMPORTANT in case the _genotype is old
   }
 

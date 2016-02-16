@@ -49,7 +49,7 @@ public:
    */
   bool operator()(EOT & eo1, EOT& eo2)
   { //2points
-	cout<<"enter crossover"<<endl;
+	//////cout<<"enter crossover"<<endl;
         bool oneAtLeastIsModified(true);
 	unsigned int N = eo1.getSize();
 	unsigned int p1, p2; //random int;
@@ -57,7 +57,7 @@ public:
 	
 	p1 =  rdm(); // rng.random(N);
 	p2 =  rdm(); // rng.random(N);
-	cout <<"p1, p2 " <<p1<<" "<<p2<<endl;
+	//////cout <<"p1, p2 " <<p1<<" "<<p2<<endl;
 	// vérifie et corrige point1 < point2
 	if (p1 > p2)
 		std::swap(p1, p2);
@@ -77,11 +77,11 @@ public:
 	{
 		oneAtLeastIsModified = false;
 	}
-	if  (! eo1.isValidBlock() )
-		cout << "ERROR block 1 "<< endl;
-	if  (! eo2.isValidBlock() )
-		cout << "ERROR block 2 "<< endl;
-	cout<<"exit crossover"<<endl;
+	//if  (! eo1.isValidBlock() )
+		//////cout << "ERROR block 1 "<< endl;
+	//if  (! eo2.isValidBlock() )
+		//////cout << "ERROR block 2 "<< endl;
+	//////cout<<"exit crossover"<<endl;
     return oneAtLeastIsModified;
   }
 	
@@ -96,10 +96,10 @@ public:
 	std::vector<bool> taken_values(parent1.getSize(), false);
 	vector<int> var;
 	
-	parent1.printJob();
-	parent1.printBlock();
-	parent2.printJob();
-	parent2.printBlock();
+	//parent1.printJob();
+	//parent1.printBlock();
+	//parent2.printJob();
+	//parent2.printBlock();
 	
 	for (unsigned int i =0; i < parent1.getSize(); i++)
 	{
@@ -150,8 +150,8 @@ public:
 		}
 	}
 
-	result.printJob();
-	result.printBlock();
+	//result.printJob();
+	//esult.printBlock();
 	return result;	
 }
   

@@ -17,6 +17,7 @@ using namespace std;
 #include "eoJobShopEvalFunc.h"
 #include "eoJobShopExtract.h"
 #include "eoJobShopSubblock.h"
+#include "eoJobShopLox.h"
 
 typedef eoJobShop Indi;
 
@@ -38,7 +39,7 @@ int main (int argc, char *argv[])
 
     /** Lecture des informations d entree a partir du fichier mentionné dans le fichier "fichier.param" **/
 
-    std::string inputFile = parser.createParam(std::string("../../DataOneMachine/bky20/bky20_1.txt"), "inputFile", "File which describes input information", 'I', "Param" ).value();
+    std::string inputFile = parser.createParam(std::string("../../DataOneMachine/bky100/bky100_1.txt"), "inputFile", "File which describes input information", 'I', "Param" ).value();
     
    
     
@@ -48,7 +49,7 @@ int main (int argc, char *argv[])
     eoState state;                // to keep all things allocated*/
 
     // parameters
-    unsigned int MAX_GEN = parser.createParam((unsigned int)(100), "maxGen", "Maximum number of generations",'G',"Param").value();
+    unsigned int MAX_GEN = parser.createParam((unsigned int)(500), "maxGen", "Maximum number of generations",'G',"Param").value();
  
    
     // objective functions evaluation
@@ -61,10 +62,11 @@ int main (int argc, char *argv[])
     eoJobShopInit<Indi> init(data);
 
     // A (first) crossover (possibly use the parser in its Ctor)
-    // eoJobShopQuadCrossover<Indi> cross;
-    eoJobShopMask<Indi> cross;
+    eoJobShopQuadCrossover<Indi> cross;
+    //eoJobShopMask<Indi> cross;
+    //eoJobShopLox<Indi> cross;   
     eoJobShopMutation<Indi> mut;
-    //eoJobShopExtract<Indi> mut;
+    eoJobShopExtract<Indi> mut2;
     eoJobShopSubblock<Indi> mut1;
     //eoUCPWindowCrossover<Indi> w_cross;
 	  
@@ -75,30 +77,35 @@ int main (int argc, char *argv[])
     if ( (pCross < 0) || (pCross > 1) )
       throw runtime_error("Invalid pCross");
 
-    double pMut1 = parser.getORcreateParam(1., "pMut1", "Probability of Mutation", '1', "Variation Operators" ).value();
+    double pMut1 = parser.createParam(1., "pMut1", "Probability of Mutation", 'S', "Variation Operators" ).value();
+    double pMut2 = parser.createParam(1., "pMut2", "Probability of Mutation", 'E', "Variation Operators" ).value();
 
     // minimum check 
     if ( (pMut1 < 0) || (pMut1 > 1) )
-      throw runtime_error("Invalid pMut");
+      throw runtime_error("Invalid pMut1");
 
-    double pMut = parser.createParam(0., "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
+    if ( (pMut2 < 0) || (pMut2 > 1) )
+      throw runtime_error("Invalid pMut2");
+    
+    double pMut = parser.createParam(1., "pMut", "Probability of Mutation", 'M', "Variation Operators" ).value();
     if ( (pMut < 0) || (pMut > 1) )
         throw runtime_error("Invalid pCross");
   
     eoPropCombinedMonOp<Indi> mutCombined(mut, pMut);
     mutCombined.add(mut1,pMut1);
-    double pMutCombined = parser.getORcreateParam(0.1, "pMutCombined", "Probability of Mutation", '1', "Variation Operators" ).value();
+    mutCombined.add(mut2,pMut2);
+    double pMutCombined = parser.createParam(0.1, "pMutCombined", "Probability of Mutation", 'W', "Variation Operators" ).value();
     
     // // initialize the population
-	eoPop<Indi>& pop   = make_pop(parser, state, init);
+    eoPop<Indi>& pop   = make_pop(parser, state, init);
     eoFileMonitor   *myFileMonitor;
  
     int algo = parser.createParam(0, "algo", "Choose algorithm 0 = NSGA-II, 1 = IBEA", 'A', "Algorithm").value();
     int maxtime=parser.createParam(100, "maxtime", "temps maximal", 't', "Algorithm").value();
     // printing of the initial population
-    /*cout << "Initial Population\n";
-    pop.sortedPrintOn(cout);
-    cout << endl;*/
+    /*////cout << "Initial Population\n";
+    pop.sortedPrintOn(////cout);
+    ////cout << endl;*/
     
    
     eoTimeContinue< Indi >  continuator(maxtime);
@@ -131,15 +138,15 @@ int main (int argc, char *argv[])
     
 
     // printing of the final population
-    cout << "Final Population\n";
-    pop.sortedPrintOn(cout);
-    cout << endl;
+    ////cout << "Final Population\n";
+    //pop.sortedPrintOn(////cout);
+    ////cout << endl;
 
     // printing of the final archive
-    //std::cout << "Final Archive " << std::endl;
-    //std::cout << "sans archive : ";
+    //std::////cout << "Final Archive " << std::endl;
+    //std::////cout << "sans archive : ";
     arch.sortedPrintOn(std::cout);
-    std::cout << std::endl;
+    ////cout << std::endl;
     
     return EXIT_SUCCESS;
 }

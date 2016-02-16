@@ -46,9 +46,9 @@ public:
    */
   bool operator()(eoJobShop & eo)
   {
-	cout<<"enter mutation subblock"<<endl;
-	eo.printJob();
-	eo.printBlock();
+	//cout<<"enter mutation subblock"<<endl;
+	//eo.printJob();
+	//eo.printBlock();
 	bool isModified(true);
 	unsigned int N = eo.getSize();
 	unsigned int p, t; //random int;
@@ -57,22 +57,22 @@ public:
 	eoUniformGenerator<int> rdm(0,N);
 	p =  rdm(); // rng.random(N);
 	  
-	cout<<"point "<<p<<endl;
+	//cout<<"point "<<p<<endl;
 	int b = eo.getBlock(p);
 	int ind_b =   eo.getIndBlock(b);
-	cout<<" bloc "<<b<<" indice_B "<<ind_b<<endl;
+	//cout<<" bloc "<<b<<" indice_B "<<ind_b<<endl;
 	if (b >= eo.getBlockSize()-1) //Si dernier bloc ... 
 	{
-		cout<<"LAST BLOC"<<endl;
+		//cout<<"LAST BLOC"<<endl;
 		comp = eo.getComp(p);
-		cout<<"Comp "<<comp<<endl;
+		//cout<<"Comp "<<comp<<endl;
 		max = eo.getMaxD();
-		cout<<"Max d "<<max<<endl;
+		//cout<<"Max d "<<max<<endl;
 		max_t2 = max - comp;
-		cout << "COMP "<<comp<<" ind_b "<< ind_b<<" max_t2 "<<max_t2<<" max_d "<<max<<endl;
+		//cout << "COMP "<<comp<<" ind_b "<< ind_b<<" max_t2 "<<max_t2<<" max_d "<<max<<endl;
 		if (p == ind_b) // si début de block
 		{
-			cout<<"début bloc"<<endl;
+			//cout<<"début bloc"<<endl;
 			max_t1 = eo.getJob(p)[1];
 			
 			if (max_t2 <=0)
@@ -80,7 +80,7 @@ public:
 				eoUniformGenerator<int> rdm2(1, max_t1);
 				t = rdm2();
 				push_left_last(eo, t, p, max_t1, b); //retry idle_time
-				cout<<"push left last "<<max_t1<<endl;
+				//cout<<"push left last "<<max_t1<<endl;
 			}
 			else
 			{
@@ -90,12 +90,12 @@ public:
 				if (t <= max_t1)
 				{
 					push_left_last(eo, t, p, max_t1, b); //retry idle_time
-					cout<<"push left last t "<<t<<" max_t1 "<<max_t1<<endl;
+					//cout<<"push left last t "<<t<<" max_t1 "<<max_t1<<endl;
 				}
 				else 
 				{
 					push_right_last(eo,t-max_t1, p, max_t1, b); // add idle_time
-					cout<<"push right last t "<<t-max_t1<<" max_t1 "<<max_t1<<endl;
+					//cout<<"push right last t "<<t-max_t1<<" max_t1 "<<max_t1<<endl;
 				}
 			}
 		}	
@@ -103,7 +103,7 @@ public:
 		{
 			if (max_t2 > 0)
 			{
-				cout<<"B1111"<<endl;
+				////cout<<"B1111"<<endl;
 				eoUniformGenerator<int> rdm2(1, max_t2); // rdm de t
 				t = rdm2();
 				eo.modifyIdleT(p, t);
@@ -111,7 +111,7 @@ public:
 			}
 			else
 			{
-				cout<<"false"<<endl;
+				////cout<<"false"<<endl;
 				isModified = false;
 				return isModified;
 			}
@@ -121,7 +121,7 @@ public:
 	}
 	else 
 	{
-		cout<<"B222"<<endl;
+		//cout<<"B222"<<endl;
 		int nextJ = eo.getIndBlock(b+1); 
 		if (p == ind_b) // si début de block
 		{
@@ -148,11 +148,11 @@ public:
 				eo.addBlock(b+1, p);
 		}
 	}
-	if  (! eo.isValidBlock() )
-		cout << "ERROR block "<< endl;
-	eo.printJob();
-	eo.printBlock();
-	cout<< "exit mutation subblock"<<endl;
+	//if  (! eo.isValidBlock() )
+		////cout << "ERROR block "<< endl;
+	//eo.printJob();
+	//eo.printBlock();
+	//cout<< "exit mutation subblock"<<endl;
 	return isModified;
   }
   

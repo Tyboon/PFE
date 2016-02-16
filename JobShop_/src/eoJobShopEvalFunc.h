@@ -64,23 +64,23 @@ public:
    */
   void operator()(EOT & _eo)
   {
-	cout<< "enter eval function" <<endl;
+	//cout<< "enter eval function" <<endl;
     // test for invalid to avoid recomputing fitness of unmodified individuals
     if (_eo.invalid())
       {
 	evalR(_eo);
-	      	cout<<"before"<<endl;
+	      	////cout<<"before"<<endl;
 
 	eoJobShopObjectiveVector objVec;
 	vector<int> res = tard_early(_eo);
-	cout<<"afeter"<<endl;
+	////cout<<"afeter"<<endl;
 	objVec[0] = res[0];
 	objVec[1] = res[1];
 	_eo.objectiveVector(objVec);
       }
-      	if  (! _eo.isValidBlock() )
-		cout << "ERROR eval block "<< endl;
-      cout<<"exit eval counter"<<endl;
+      	//if  (! _eo.isValidBlock() )
+		////cout << "ERROR eval block "<< endl;
+      //cout<<"exit eval counter"<<endl;
   }
 
 private:

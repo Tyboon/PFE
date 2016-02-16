@@ -121,6 +121,7 @@ public:
 	{
 		jobs[pos][1] = val;
 	}
+	
 	 int getSize()
 	{
 		return jobs.size();
@@ -131,7 +132,7 @@ public:
 		blocks = v;
 	}
 	
-	void putJobs(vector<vector<int> > & jobs_)
+	void putJobs(vector<vector<int> >  jobs_)
 	{
 		jobs = jobs_;
 	}
@@ -198,7 +199,8 @@ public:
 	
 	void deleteBlock(int i)
 	{
-		blocks.erase(blocks.begin() + i);
+		if (i != 0)
+			blocks.erase(blocks.begin() + i);
 	}
 	
 	void modifyBlock(int b, int new_pos)
@@ -221,8 +223,8 @@ public:
 		return true;
 	}
 	
-		
-	void printJob() 
+	
+	/**void printJob() 
 	{
 		int N = jobs.size();
 		cout<<"JOB ";
@@ -242,7 +244,7 @@ public:
 		for (int i = 0; i < blocks.size(); i++)
 			cout<<blocks[i]<<" ";
 		cout<<endl;
-	}
+	}**/
 	
 	int getMaxD()
 	{
@@ -257,7 +259,7 @@ public:
 	
 	int getComp(int j)
 	{	
-		cout<<"Enter getComp "<<j<<endl;
+		//cout<<"Enter getComp "<<j<<endl;
 		int comp = 0;
 		int i = 0;
 		vector<int> job(2,0);
@@ -268,7 +270,7 @@ public:
 			i++;
 		}
 		comp += jobs[i][1];
-		cout<<"Exit getComp "<<comp<<endl;
+		//cout<<"Exit getComp "<<comp<<endl;
 		return comp;
 	}
 	
@@ -280,6 +282,11 @@ public:
 	void putData(Data data_)
 	{
 		data= data_;
+	}
+	
+	vector<vector<int> > getJobs()
+	{
+		return jobs;
 	}
 	
 private: // put all data here

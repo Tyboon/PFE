@@ -33,9 +33,9 @@ public:
    */
   bool operator()(eoJobShop & eo)
   {
-	cout<<"enter opR"<<endl;
-	eo.printJob();
-	eo.printBlock();
+	//cout<<"enter opR"<<endl;
+	//eo.printJob();
+	//eo.printBlock();
 	bool isModified(true);
 	int comp = 0;
 	int diff = 0;
@@ -59,9 +59,9 @@ public:
 		}
 		comp += job[1] + data.getJob(job[0]).getP();
 	}
-	eo.printJob();
-	eo.printBlock();
-	cout<<"exit opR"<<endl;
+	//eo.printJob();
+	//eo.printBlock();
+	//cout<<"exit opR"<<endl;
 	return isModified;
   }
 
